@@ -21,6 +21,6 @@
       "start": "ts-node src/index.ts",
       "dev": "node build/index.js",
       "typeorm": "typeorm-ts-node-commonjs",
-      "build": "tsc"
+      "build": "npm install"
    }
 }
