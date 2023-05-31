@@ -1,38 +1,35 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm"
-import { IsEmail } from "class-validator"
-
 @Entity()
 export class User {
 
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({nullable: false })
+    @Column()
     first_name: string
 
-    @Column({nullable: false })
+    @Column()
     last_name: string
 
     @Column({nullable: true })
     middle_name: string
 
-    @Column({nullable: false })
+    @Column()
     username: string
 
-    @Column({nullable: false })
-    @IsEmail()
+    @Column()
     email: string
 
-    @Column({nullable: false })
+    @Column()
     phone: string
 
-    @Column({nullable: false })
+    @Column()
     password: string
 
     @CreateDateColumn()
     created_at: Date
 
     @UpdateDateColumn()
-    updayted_at: Date
+    updated_at: Date
 
 }
