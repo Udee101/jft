@@ -52,19 +52,19 @@ export class UserController {
   };
 
   public static deleteUser = async(req:Request, res:Response) => {
-  try {
+    try {
 
-    const userRepository = AppDataSource.getRepository(User)
+      const userRepository = AppDataSource.getRepository(User)
 
-    const user = await userRepository.findOneBy({id: parseInt(req.params.id)})
+      const user = await userRepository.findOneBy({id: parseInt(req.params.id)})
 
-    await userRepository.remove(user)
-    
-    return res.status(200).json({message: "User deleted successfully"})
+      await userRepository.remove(user)
+      
+      return res.status(200).json({message: "User deleted successfully"})
 
-  } catch (error) {
-    res.status(404).json({ message: error.message })
+    } catch (error) {
+      res.status(404).json({ message: error.message })
+    }
   }
-}
 
 }
