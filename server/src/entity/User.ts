@@ -3,37 +3,37 @@ import { Listing } from "./Listing"
 @Entity('users')
 export class User {
 
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number
 
-    @Column()
-    first_name: string
+  @Column()
+  first_name: string
 
-    @Column()
-    last_name: string
+  @Column()
+  last_name: string
 
-    @Column({nullable: true })
-    middle_name: string
+  @Column({nullable: true })
+  middle_name: string
 
-    @Column({ unique: true})
-    username: string
+  @Column({ unique: true})
+  username: string
 
-    @Column({ unique: true})
-    email: string
+  @Column({ unique: true})
+  email: string
 
-    @Column()
-    phone: string
+  @Column()
+  phone: string
 
-    @Column()
-    password: string
+  @Column()
+  password: string
 
-    @CreateDateColumn()
-    created_at: Date
+  @CreateDateColumn()
+  created_at: Date
 
-    @UpdateDateColumn()
-    updated_at: Date
-    
-    @OneToMany(() => Listing, (listing) => listing.user)
-    listings: Listing[]
+  @UpdateDateColumn()
+  updated_at: Date
+  
+  @OneToMany(() => Listing, (listing) => listing.user)
+  listings: Listing[]
 
 }
