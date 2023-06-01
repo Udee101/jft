@@ -91,7 +91,7 @@ export class AuthController {
       })
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 10 })
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET)
 
     return res.status(200).json({
       message: 'Login Successfull',
