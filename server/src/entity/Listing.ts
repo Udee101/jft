@@ -31,6 +31,9 @@ export class Listing {
   @CreateDateColumn()
   created_at: Date
   
-  @ManyToOne(() => User, (user) => user.listings)
+  @ManyToOne(() => User, (user) => user.listings, {
+    onDelete: "RESTRICT",
+    cascade: ["update"]
+  })
   user: User
 }
