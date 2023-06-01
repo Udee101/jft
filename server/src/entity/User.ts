@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm"
+import { Listing } from "./Listing"
 @Entity('users')
 export class User {
 
@@ -14,10 +15,10 @@ export class User {
     @Column({nullable: true })
     middle_name: string
 
-    @Column()
+    @Column({ unique: true})
     username: string
 
-    @Column()
+    @Column({ unique: true})
     email: string
 
     @Column()
@@ -31,5 +32,8 @@ export class User {
 
     @UpdateDateColumn()
     updated_at: Date
+    
+    @OneToMany(() => Listing, (listing) => listing.user)
+    listings: Listing[]
 
 }
