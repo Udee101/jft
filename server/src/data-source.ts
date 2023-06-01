@@ -3,7 +3,6 @@ import "reflect-metadata"
 import { DataSource } from "typeorm"
 import { User } from "./entity/User"
 import { Listing } from "./entity/Listing";
-import { AddColumnToListingsTable1685641270839 } from "./migration/1685641270839-AddColumnToListingsTable";
 
 dotenv.config({ path: ".env" });
 
@@ -17,6 +16,6 @@ export const AppDataSource = new DataSource({
     synchronize: true,
     logging: false,
     entities: [User, Listing],
-    migrations: [AddColumnToListingsTable1685641270839],
+    migrations: [],
     subscribers: [],
 })

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, UpdateDateColumn } from "typeorm"
 import { User } from "./User"
 
 @Entity('listings')
@@ -30,6 +30,9 @@ export class Listing {
   
   @CreateDateColumn()
   created_at: Date
+
+  @UpdateDateColumn()
+  updated_at: Date
   
   @ManyToOne(() => User, (user) => user.listings, {
     onDelete: "RESTRICT",
