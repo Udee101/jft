@@ -39,15 +39,7 @@ export class ListingController {
     }
     const check = v.compile(schema)
 
-    const result = check({
-      title: title,
-      tags: tags,
-      company: company,
-      email: email,
-      location: location,
-      website: website,
-      description: description
-    })
+    const result = check(req.body)
 
     if (result !== true) {
       return res.status(400).json({error: result})
@@ -58,13 +50,13 @@ export class ListingController {
     const listingRepository = AppDataSource.getRepository(Listing)
 
     const listing = listingRepository.create({
-      title: title,
-      tags: tags,
-      company: company,
-      email: email,
-      location: location,
-      website: website,
-      description: description,
+      title,
+      tags,
+      company,
+      email,
+      location,
+      website,
+      description
     })
 
     listing.user = user

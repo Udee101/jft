@@ -31,14 +31,7 @@ export class AuthController {
     }
     const check = v.compile(schema)
 
-    const result = check({
-      first_name: first_name,
-      last_name: last_name,
-      username: username,
-      email: email,
-      phone: phone,
-      password: password
-    })
+    const result = check(req.body)
 
     if (result !== true) {
       return res.status(400).json(result)
