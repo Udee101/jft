@@ -10,7 +10,7 @@ export class AuthController {
   public static register = async(req:Request, res:Response) => {
 
     const Validator = require("fastest-validator");
-    
+
     const { 
       first_name,
       last_name,
@@ -20,12 +20,12 @@ export class AuthController {
       password,
     } = req.body
 
-    const v = new Validator()
+    const v = new Validator({ haltOnFirstError: true })
     const schema = {
       first_name: "string|required",
       last_name: "string|required",
       username: "string|required",
-      email: "string|required|email",
+      email: "email|required",
       phone: "string|required",
       password: "string|required",
     }
@@ -41,29 +41,37 @@ export class AuthController {
     })
 
     if (result !== true) {
-      const errors = result.map((el) => el.message)
-      return res.status(400).json(errors)
+      return res.status(400).json(result)
     }
 
     const userRepository = AppDataSource.getRepository(User)
-    
+    const checkIfUser = await userRepository.findOne({
+      where: [{ username: username }, { email: email }]
+    })
+
+    if (checkIfUser) {
+      return res.status(400).json({
+        message: 'Username or email is already taken.'
+      })
+    }
+      
     const salt = await bcrypt.genSalt()
     const hashedPassword = await bcrypt.hash(password, salt)
     
     const user = userRepository.create({
-      first_name: first_name,
-      last_name: last_name,
-      username: username,
-      email: email,
-      phone: phone,
+      first_name,
+      last_name,
+      username,
+      email,
+      phone,
       password: hashedPassword,
     })
     
-    await userRepository.save(user)
+    await userRepository.insert(user)
     
     return res.status(201).json({
       message: 'Registration Successfull!',
-      'user': user
+      user: user
     })  
   };
 
@@ -80,13 +88,13 @@ export class AuthController {
     })
 
     if (!user) {
-      return res.status(401).json({
+      return res.status(400).json({
         message: "Invalid Credentials"
       })
     }
     const passwordCheck = await bcrypt.compare(password, user.password)
     if (!passwordCheck) {
-      return res.status(401).json({
+      return res.status(400).json({
         message: "Invalid Credentials"
       })
     }
@@ -95,8 +103,8 @@ export class AuthController {
 
     return res.status(200).json({
       message: 'Login Successfull',
-      'user': user,
-      'token': token
+      user: user,
+      token: token
     })
   }
 }
