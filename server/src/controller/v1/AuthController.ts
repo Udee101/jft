@@ -82,8 +82,8 @@ export class AuthController {
 
     const v = new Validator()
     const schema = {
-      usernameOrEmail: 'required', 
-      password: 'required'
+      usernameOrEmail: 'string|required', 
+      password: 'string|required'
     }
 
     const check = v.compile(schema)
