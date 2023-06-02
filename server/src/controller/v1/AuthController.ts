@@ -20,7 +20,7 @@ export class AuthController {
       password,
     } = req.body
 
-    const v = new Validator({ haltOnFirstError: true })
+    const v = new Validator()
     const schema = {
       first_name: "string|required",
       last_name: "string|required",
@@ -77,7 +77,22 @@ export class AuthController {
 
   public static login = async(req:Request, res:Response) => {
 
+    const Validator = require("fastest-validator");
     const { usernameOrEmail, password } = req.body
+
+    const v = new Validator()
+    const schema = {
+      usernameOrEmail: 'required', 
+      password: 'required'
+    }
+
+    const check = v.compile(schema)
+    const result = check(req.body)
+
+    if (result !== true) {
+      return res.status(400).json(result)
+    }
+
     const userRepository = AppDataSource.getRepository(User)
 
     const user = await userRepository.findOne({
