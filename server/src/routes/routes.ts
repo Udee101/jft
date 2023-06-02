@@ -9,12 +9,10 @@ const router = express.Router()
 router.post('/register', AuthController.register)
 router.post('/login', AuthController.login)
 
-router.get('/users', authenticateToken, UserController.getAllUsers)
-
 router.use('/users/:id', authenticateToken)
 router.get('/users/:id', UserController.getUser)
 router.post('/users/:id', UserController.update)
-router.delete('/users/:id', UserController.deleteUser)
+router.get('/users/:id/listings', ListingController.getUserListings)
 
 router.get('/listings', ListingController.index)
 router.post('/listings', authenticateToken, ListingController.create)
@@ -23,6 +21,5 @@ router.use('/listings/:id', authenticateToken)
 router.get('/listings/:id', ListingController.show)
 router.post('/listings/:id', ListingController.update)
 router.delete('/listings/:id', ListingController.destroy)
-router.get('/users/:id/listings', ListingController.getUserListings)
 
 export default router

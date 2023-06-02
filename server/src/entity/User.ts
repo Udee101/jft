@@ -15,10 +15,10 @@ export class User {
   @Column({nullable: true })
   middle_name: string
 
-  @Column({ unique: true})
+  @Column()
   username: string
 
-  @Column({ unique: true})
+  @Column()
   email: string
 
   @Column()
