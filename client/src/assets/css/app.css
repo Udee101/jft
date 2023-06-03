@@ -777,7 +777,7 @@ footer>.name {
 
 .listing-header {
   display: grid;
-  grid-template-columns: 90px 1fr;
+  grid-template-columns: 1fr;
   align-items: center;
 }
 
@@ -786,21 +786,26 @@ footer>.name {
   gap: 0.7rem;
 }
 
+.desc{
+  border-top: 1px solid whitesmoke;
+  max-width: 680px;
+}
+
 .desc>.job-desc {
   line-height: 24px;
 }
 
 .listing-cta {
   display: grid;
-  grid-template-columns: 1fr;
-  row-gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 }
 
 .listing-cta>a {
   background: var(--color-1);
-  padding: 0.5rem 1rem;
+  padding: 0.7rem 1rem;
   text-align: center;
-  border-radius: 0.2rem;
+  border-radius: 1rem;
 }
 
 .banner-container {
@@ -1090,33 +1095,8 @@ footer>.name {
     text-align: left;
   }
 
-  .listing-header {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    place-items: center;
-    row-gap: 1rem;
-  }
-
-  .listing-intro {
-    text-align: center;
-    line-height: 30px;
-  }
-
-  .listing-loc,
-  .listing-wrapper>.comp-tags {
-    justify-content: center;
-  }
-
-  .desc {
-    border-top: 1px solid whitesmoke;
-    max-width: 680px;
-    margin: 1rem auto;
-  }
-
   .listing-cta {
-    grid-template-columns: repeat(2, 335px);
-    column-gap: 1rem;
-    place-content: center;
+    grid-template-columns: repeat(2, 200px);
   }
 
   .banner-container>.search-wrapper {
@@ -1161,7 +1141,6 @@ footer>.name {
 @media screen and (min-width: 1000px) {
   .feat-job-container>.jobs {
     grid-template-columns: repeat(3, 1fr);
-    /* gap: 2rem; */
   }
   .subscribe-container, 
   .banner-container>.banner {
