@@ -262,6 +262,11 @@ textarea{
   margin-bottom: 1rem;
 }
 
+.my-0-5{
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .mx-1 {
   margin-left: 1rem;
   margin-right: 1rem;
@@ -621,7 +626,7 @@ nav {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
-  row-gap: 1.2rem;
+  row-gap: 1.5rem;
   margin: 3rem auto;
 }
 
@@ -630,12 +635,17 @@ nav {
   flex-direction: row;
   gap: 1rem;
   place-items: center;
-  min-height: 200px;
+  min-height: 100px;
   border-radius: 0.5rem;
   background: var(--box-bg-color);
   border: 1px solid whitesmoke;
-  padding: 1rem 0 1.5rem 1rem;
+  box-shadow: 0 0.1rem 0.2rem #edecec;
+  padding: 1rem;
   transition: .4s;
+}
+
+.comp-title{
+  max-width: 200px;
 }
 
 .job-type,
@@ -654,14 +664,9 @@ nav {
   padding: 0.25rem;
 }
 
-.view-job, .more-jobs {
+.more-jobs {
   border: 1px solid var(--color-4);
-  padding: 0.25rem 1rem;
   border-radius: 0.2rem;
-  background: var(--color-7);
-}
-
-.more-jobs{
   padding: 0.75rem;
   background: var(--color-5);
 }
@@ -871,12 +876,12 @@ footer>.name {
 }
 
 .all-listings-wrapper>.all-listings-container {
-  transform: translateY(10%);
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
-  row-gap: 1rem;
+  row-gap: 1.5rem;
   padding: 2rem 1rem 5rem;
+  margin-top: 8rem;
 }
 
 .page-container {
@@ -1060,7 +1065,7 @@ footer>.name {
 
   .feat-job-container>.jobs {
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 1.2rem;
+    column-gap: 1.5rem;
   }
 
   .subscribe-container {
@@ -1119,9 +1124,8 @@ footer>.name {
   }
 
   .all-listings-wrapper>.all-listings-container {
-    transform: translateY(15%);
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 1.2rem;
+    column-gap: 1.5rem;
   }
 
   .info {
@@ -1149,12 +1153,16 @@ footer>.name {
     grid-template-columns: repeat(2, 240px);
   }
 
-  .category {
+  .category, .all-listings-wrapper>.all-listings-container {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media screen and (min-width: 1000px) {
+  .feat-job-container>.jobs {
+    grid-template-columns: repeat(3, 1fr);
+    /* gap: 2rem; */
+  }
   .subscribe-container, 
   .banner-container>.banner {
     border-radius: 0.5rem;
