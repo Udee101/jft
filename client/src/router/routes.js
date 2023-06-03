@@ -40,7 +40,7 @@ const routes = [
     }
   },
   {
-    path: '/all-listings',
+    path: '/listings',
     name: 'allListings',
     component: AllListings,
     meta: {
@@ -48,8 +48,8 @@ const routes = [
     }
   },
   {
-    path: '/listing/:listingId',
-    name: 'listing',
+    path: '/listings/:listingId',
+    name: 'listing.id',
     component: JobListing,
     meta: {
       requiresAuth: true
