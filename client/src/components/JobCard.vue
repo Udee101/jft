@@ -3,7 +3,7 @@
     <router-link :to="{name: 'listing.id', params: { listingId: job.id }}" class="job-box scale text-black">
 
       <div class="comp-img">
-        <img :src="CompImg" alt="job-svg" width="80" height="80">
+        <div v-html="setImg"></div>
       </div>
 
       <div class="detail-wrapper">
@@ -19,13 +19,15 @@
 </template>
 
 <script>
-import CompImg from '../assets/img/patternpad.svg'
+import { toSvg } from "jdenticon"
+
   export default {
-    data() {
-      return {
-        CompImg
+    computed: {
+      setImg(){
+        return toSvg(this.job.company, 80)
       }
     },
+
     props: {
       job: {
         type: Object
