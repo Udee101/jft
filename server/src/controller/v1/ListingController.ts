@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { User } from "../../entity/User"
 import { Listing } from "../../entity/Listing"
 import { AppDataSource } from "../../data-source"
+import { validate } from "class-validator";
 
 export class ListingController {
 
@@ -14,58 +15,30 @@ export class ListingController {
 
   public static create = async(req:Request, res:Response) => {
     
-    const Validator = require("fastest-validator");
+    const user = await AppDataSource.getRepository(User).findOneBy({ id: parseInt(req.body.userId) })
     
-    const {
-      userId,
-      title,
-      tags,
-      company,
-      email,
-      location,
-      website,
-      description
-    } = req.body
-
-    const v = new Validator()
-    const schema = {
-      title: "string|required",
-      tags: "string|required",
-      company: "string|required",
-      email: "email|required",
-      location: "string|required",
-      website: "url|required",
-      description: "string|required",
-    }
-    const check = v.compile(schema)
-
-    const result = check(req.body)
-
-    if (result !== true) {
-      return res.status(400).json({error: result})
-    }
-
-    const user = await AppDataSource.getRepository(User).findOneBy({ id: parseInt(userId) })
+    const listing = new Listing()
+    listing.title = req.body.title
+    listing.tags = req.body.tags
+    listing.company = req.body.company
+    listing.email = req.body.email
+    listing.location = req.body.location
+    listing.website = req.body.website
+    listing.description = req.body.description
+    listing.user = user
 
     const listingRepository = AppDataSource.getRepository(Listing)
-
-    const listing = listingRepository.create({
-      title,
-      tags,
-      company,
-      email,
-      location,
-      website,
-      description
-    })
-
-    listing.user = user
-    await listingRepository.insert(listing)
-
-    return res.status(201).json({
-      message: "Job Listing created!",
-      listing: listing
-    })
+    const errors = await validate(listing, {validationError: { target: false}})
+    if (errors.length > 0) {
+      return res.status(400).json({ errors: errors })
+    } else {
+      await listingRepository.insert(listing)
+      
+      return res.status(201).json({
+        message: "Job Listing created!",
+        listing: listing
+      })
+    }
     
   };
 

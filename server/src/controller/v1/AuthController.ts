@@ -4,95 +4,64 @@ import { AppDataSource } from "../../data-source"
 import { User } from "../../entity/User"
 import * as bcrypt from "bcrypt"
 import * as jwt from "jsonwebtoken"
+import { validate } from "class-validator"
 
 dotenv.config({ path: ".env" });
 export class AuthController {
   public static register = async(req:Request, res:Response) => {
 
-    const Validator = require("fastest-validator");
+    const salt = await bcrypt.genSalt()
+    const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
-    const { 
-      first_name,
-      last_name,
-      username,
-      email,
-      phone,
-      password,
-    } = req.body
-
-    const v = new Validator()
-    const schema = {
-      first_name: "string|required",
-      last_name: "string|required",
-      username: "string|required",
-      email: "email|required",
-      phone: "string|required",
-      password: "string|required",
-    }
-    const check = v.compile(schema)
-
-    const result = check(req.body)
-
-    if (result !== true) {
-      return res.status(400).json(result)
-    }
+    const user = new User()
+    user.first_name = req.body.first_name
+    user.last_name = req.body.last_name
+    user.username = req.body.username
+    user.email = req.body.email
+    user.phone = req.body.phone
+    user.password = hashedPassword
 
     const userRepository = AppDataSource.getRepository(User)
-    const checkIfUser = await userRepository.findOne({
-      where: [{ username: username }, { email: email }]
-    })
-
-    if (checkIfUser) {
-      return res.status(400).json({
-        message: 'Username or email is already taken.'
+    const errors = await validate(user, {validationError: { target: false}})
+    if (errors.length > 0) {
+      return res.status(400).json({ errors: errors })
+    } else {
+      const userAlreadyExist = await userRepository.findOne({
+        where: [{ username: req.body.username }, { email: req.body.email }]
       })
-    }
+  
+      if (userAlreadyExist) {
+        return res.status(400).json({
+          message: "Username or email is already taken."
+        })
+      }
+      await userRepository.insert(user)
       
-    const salt = await bcrypt.genSalt()
-    const hashedPassword = await bcrypt.hash(password, salt)
-    
-    const user = userRepository.create({
-      first_name,
-      last_name,
-      username,
-      email,
-      phone,
-      password: hashedPassword,
-    })
-    
-    await userRepository.insert(user)
-    
-    return res.status(201).json({
-      message: 'Registration Successfull!',
-      user: user
-    })  
+      return res.status(201).json({
+        message: "Registration Successfull!",
+        user: user
+      })  
+    }
   };
 
   public static login = async(req:Request, res:Response) => {
 
-    const Validator = require("fastest-validator");
     const { usernameOrEmail, password } = req.body
 
-    const v = new Validator()
-    const schema = {
-      usernameOrEmail: 'string|required', 
-      password: 'string|required'
+    if (!usernameOrEmail) {
+      return res.status(400).json({
+        message: "The username or email field is required"
+      })
     }
-
-    const check = v.compile(schema)
-    const result = check(req.body)
-
-    if (result !== true) {
-      return res.status(400).json(result)
+    if (!password) {
+      return res.status(400).json({
+        message: "The password field is required"
+      })
     }
 
     const userRepository = AppDataSource.getRepository(User)
-
     const user = await userRepository.findOne({
-      where: [
-        { username: usernameOrEmail }, 
-        { email: usernameOrEmail }
-      ]
+      where: [{ username: usernameOrEmail }, { email: usernameOrEmail }]
     })
 
     if (!user) {
@@ -107,10 +76,10 @@ export class AuthController {
       })
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET)
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 20 })
 
     return res.status(200).json({
-      message: 'Login Successfull',
+      message: "Login Successfull",
       user: user,
       token: token
     })
