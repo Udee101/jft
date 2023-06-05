@@ -13,44 +13,44 @@
             <div class="form-input">
               <label for="">First Name</label>
               <input type="text" placeholder="Enter Your First Name" v-model="first_name">
-              <span v-if="errors.first_name" class="text-error">{{ errors.first_name[0] }}</span>
+              <p v-for="error of v$.first_name.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
             </div>
 
             <div class="form-input">
               <label for="">Last Name</label>
               <input type="text" placeholder="Enter Your Last Name" v-model="last_name">
-              <span v-if="errors.last_name" class="text-error">{{ errors.last_name[0] }}</span>
+              <p v-for="error of v$.last_name.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
             </div>
 
             <div class="form-input">
               <label for="">Username</label>
               <input type="text" placeholder="Enter Your Username" v-model="username">
-              <span v-if="errors.username" class="text-error">{{ errors.username[0] }}</span>
+              <p v-for="error of v$.username.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
             </div>
 
             <div class="form-input">
               <label for="">Email</label>
               <input type="email" placeholder="Enter Your Email" v-model="email">
-              <span v-if="errors.email" class="text-error">{{ errors.email[0] }}</span>
+              <p v-for="error of v$.email.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
             </div>
 
             <div class="form-input">
               <label for="">Phone</label>
               <input type="text" placeholder="Enter Your Phone Number" v-model="phone">
-              <span v-if="errors.phone" class="text-error">{{ errors.phone[0] }}</span>
+              <p v-for="error of v$.phone.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
             </div>
 
             <div class="form-input">
               <label for="">Password</label>
               <input type="password" placeholder="Enter Password" v-model="password">
-              <span v-if="errors.password" class="text-error">{{ errors.password[0] }}</span>
+              <p v-for="error of v$.password.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
             </div>
 
-            <!-- <div class="form-input">
+            <div class="form-input">
               <label for="">Confirm Password</label>
               <input type="password" placeholder="Confirm Password" v-model="confirm_password">
-              <span v-if="errors.password_confirmed" class="text-error">{{ errors.password_confirmed[0] }}</span>
-            </div> -->
+              <p v-for="error of v$.confirm_password.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
+            </div>
           </div>
           <div v-if="!isLoading" class="btn-submit">
             <button type="submit" class="text-base font-bold hover-opacity">Register</button>
@@ -67,7 +67,7 @@
           </div>
 
           <div class="back-home">
-            <a href="/" class="text-color-3 hover-opacity">Go back home</a>
+            <a href="/" class="text-color-3 hover-opacity">Back home</a>
           </div>
         </form>
       </div>
@@ -77,9 +77,15 @@
 </template>
 
 <script>
+import { useVuelidate } from '@vuelidate/core';
+import { required, email, sameAs } from '@vuelidate/validators';
 import { register } from '../api/auth';
-import LogoImg from '../assets/img/logo.svg'
+import LogoImg from '../assets/img/logo.svg';
 export default {
+  setup() {
+    return { v$: useVuelidate() }
+  },
+
   data() {
     return{
       LogoImg,
@@ -89,44 +95,60 @@ export default {
       email: "",
       phone: "",
       password: "",
-      // confirm_password: "",
+      confirm_password: "",
       isSuccessful: false,
       isLoading: false,
-      errors: {}
     }
   },
+
   methods: {
     register,
     handleSubmit(){
-
-      this.isLoading = true;
-      this.errors = {};
       
-      const data = {
-        first_name: this.first_name,
-        last_name: this.last_name,
-        username: this.username,
-        email: this.email,
-        phone: this.phone,
-        password: this.password,
-        // password_confirmation: this.confirm_password,
-      }
-
-      this.register(data).then(() => {
-        this.isSuccessful = true;
-        setTimeout(() => {
-          this.isSuccessful = false;
-          this.isLoading = false;
-          this.$router.push({
-            name: 'login'
-          })
-        }, 2000)
-      }).catch((error) => {
+      this.isLoading = true;
+      this.v$.$touch();
+      if (this.v$.$error) {
         this.isLoading = false;
-        this.errors = {...error.response.data.errors};
-      }) 
+        return;
+      } else {
+        
+        const data = {
+          first_name: this.first_name,
+          last_name: this.last_name,
+          username: this.username,
+          email: this.email,
+          phone: this.phone,
+          password: this.password,
+        }
+        
+        this.register(data).then(() => {
+          this.isSuccessful = true;
+          setTimeout(() => {
+            this.isSuccessful = false;
+            this.isLoading = false;
+            this.$router.push({
+              name: 'login'
+            })
+          }, 2000)
+        }).catch((error) => {
+          this.isLoading = false;
+          console.log(error.response.data.errors)
+        }) 
+      }
     }
   },
+
+  validations() {
+    return {
+      first_name: { required, $autoDirty: true },
+      last_name: { required, $autoDirty: true },
+      username: { required, $autoDirty: true },
+      email: { required, $autoDirty: true, email },
+      phone: { required, $autoDirty: true },
+      password: { required, $autoDirty: true },
+      confirm_password: { $autoDirty: true, sameAs: sameAs(this.password, "Password") }
+    }
+  }
 };
 </script>
 
