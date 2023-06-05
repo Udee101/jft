@@ -5,8 +5,7 @@
         <th>#</th>
         <th>Title</th>
         <th>Company</th>
-        <th></th>
-        <th></th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody class="text-color-3">
