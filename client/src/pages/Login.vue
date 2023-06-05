@@ -14,13 +14,13 @@
           <div class="form-input">
             <label for="">Email or Username</label>
             <input type="text" placeholder="Enter Email or Username" v-model="loginField">
-            <span v-if="errors.login" class="text-error">{{ errors.login[0] }}</span>
+            <p v-for="error of v$.loginField.$errors" class="text-error">{{ error.$message }}</p>
           </div>
 
           <div class="form-input">
             <label for="">Password</label>
             <input type="password" placeholder="Enter Password" v-model="password">
-            <span v-if="errors.password" class="text-error">{{ errors.password[0] }}</span>
+            <p v-for="error of v$.password.$errors" class="text-error">{{ error.$message }}</p>
           </div>
           
           <div v-if="!isLoading" class="btn-submit hover-opacity">
@@ -36,7 +36,7 @@
           </div>
 
           <div class="back-home">
-            <a href="/" class="text-color-3 hover-opacity">Go back home</a>
+            <a href="/" class="text-color-3 hover-opacity">Back home</a>
           </div>
         </form>
       </div>
@@ -46,10 +46,16 @@
 </template>
 
 <script>
+import { useVuelidate } from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
 import { login } from "../api/auth";
 import LogoImg from '../assets/img/logo.svg'
 
 export default {
+  setup(){
+    return { v$: useVuelidate() }
+  },
+
   data() {
     return{
       LogoImg,
@@ -58,41 +64,57 @@ export default {
       isSuccessful: false,
       invalidCredentials: "",
       isLoading: false,
-      errors: {},
     }
   },
+
   methods: {
     login,
     handleSubmit(){
+
       this.isLoading = true;
-      const data = {
-        usernameOrEmail: this.loginField,
-        password: this.password
-      }
+      this.invalidCredentials = "";
+      this.v$.$touch();
 
-      this.login(data).then((response) => {
-
-        const token = response.data.token;
-        
-        localStorage.setItem('jft_user', JSON.stringify(response.data.user));
-        localStorage.setItem('jft_jwt', token);
-        localStorage.setItem(
-          'jft_jwt_creation_time', Date.now()
-        );
-        
-        setTimeout(() => {
-          this.isLoading = false;
-          this.$router.push({name: 'allListings'});
-          this.$store.commit("setUserAuthTrue")
-        }, 2000)
-
-      }).catch((error) => {
+      if (this.v$.$error) {
         this.isLoading = false;
-        this.errors = {...error.response.data.errors};
-        this.invalidCredentials = error.response.data.message
-      })
+        return;
+      } else {
+
+        const data = {
+          usernameOrEmail: this.loginField,
+          password: this.password
+        }
+
+        this.login(data).then((response) => {
+          
+          const token = response.data.token;
+          
+          localStorage.setItem('jft_user', JSON.stringify(response.data.user));
+          localStorage.setItem('jft_jwt', token);
+          localStorage.setItem(
+            'jft_jwt_creation_time', Date.now()
+          );
+          
+          setTimeout(() => {
+            this.isLoading = false;
+            this.$router.push({name: 'allListings'});
+            this.$store.commit("setUserAuthTrue")
+          }, 2000)
+          
+        }).catch((error) => {
+          this.isLoading = false;
+          this.invalidCredentials = error.response.data.message
+        })
+      }
     }
   },
+
+  validations(){
+    return {
+      loginField: { required },
+      password: { required }
+    }
+  }
 };
 </script>
 
