@@ -5,14 +5,14 @@
   ></create-job-pop-up>
   <div class="manage-jobs-wrapper">
     <div class="page-container">
-      <div class="page-title my-1">
-        <p class="text-xxl text-center">Manage Jobs</p>
+      <div class="page-title mt-1">
+        <p class="text-lg">Manage Jobs</p>
+      
+        <button @click="showCreate = true" class="btn-post text-white font-bold hover-opacity cursor-pointer p-0-5">
+          <f-a-i icon="fas fa-plus" /> Post Job
+        </button>
       </div>
-
-      <div class="create-job">
-        <button @click="showCreate = true" class="btn-post text-white font-bold hover-opacity cursor-pointer p-0-5 mt-1">Post Job</button>
-      </div>
-
+      
       <div class="overflow-x-auto py-1">
         <job-listing-table></job-listing-table>
       </div>

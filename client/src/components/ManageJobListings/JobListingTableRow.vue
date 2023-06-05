@@ -19,25 +19,27 @@
     <td>{{ listing.title }}</td>
     <td>{{ listing.company }}</td>
     <td>
-      <p 
-        @click="showModal = true"
-        class="edit text-center text-color-4 cursor-pointer hover-opacity"
-      >Edit
-      </p>
-    </td>
-    <td class="text-center">
-      <p 
-        v-if="!isLoading" 
-        @click="showConfirm = true"
-        class="delete text-center text-error cursor-pointer hover-opacity"
-      > Delete
-      </p>
+      <div v-if="!isLoading" class="actions-col">
+        <p 
+          @click="showModal = true"
+          class="edit text-color-4 text-center cursor-pointer hover-opacity"
+        >
+          <f-a-i icon="fas fa-pen-to-square" /> Edit
+        </p>
+        <p 
+          @click="showConfirm = true"
+          class="delete text-color-9 text-center cursor-pointer hover-opacity"
+        >
+          <f-a-i icon="fas fa-trash-alt" /> Delete
+        </p>
+      </div>
       <f-a-i 
         v-if="isLoading" 
         icon="fas fa-circle-notch" 
-        spin 
-        size="xl"
-        class="text-color-9 text-center my-1" />
+        spin
+        size="lg"
+        class="text-color-9 text-center my-1" 
+      />
     </td>
   </tr>
 </template>
@@ -86,16 +88,15 @@ export default {
 </script>
 
 <style scoped>
-td>.edit, td>.delete{
-  border-radius: 0.2rem;
+td>div>.edit, td>div>.delete{
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
   padding: 0.1rem 0.5rem;
-  width: 50px;
-  margin-inline: auto;
 }
-td>.edit{
-  border: 1px solid var(--color-4);
-}
-td>.delete{
-  border: 1px solid var(--color-error);
+.actions-col{
+  display: flex;
+  flex-direction: row;
+  column-gap: 1.5rem;
 }
 </style>

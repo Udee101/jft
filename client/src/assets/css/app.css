@@ -968,9 +968,10 @@ footer>.name {
   background: var(--color-success);
 }
 
-.create-job {
+.page-title {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
+  place-content: center;
 }
 
 .btn-post {
