@@ -13,43 +13,43 @@
             <div class="form-input">
               <label for="">First Name</label>
               <input type="text" placeholder="Enter Your First Name" v-model="first_name">
-              <p v-for="error of v$.first_name.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
+              <p v-for="error of v$.first_name.$errors" :key="error.$uid" class="text-error text-sm">{{ error.$message }}</p>
             </div>
 
             <div class="form-input">
               <label for="">Last Name</label>
               <input type="text" placeholder="Enter Your Last Name" v-model="last_name">
-              <p v-for="error of v$.last_name.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
+              <p v-for="error of v$.last_name.$errors" :key="error.$uid" class="text-error text-sm">{{ error.$message }}</p>
             </div>
 
             <div class="form-input">
               <label for="">Username</label>
               <input type="text" placeholder="Enter Your Username" v-model="username">
-              <p v-for="error of v$.username.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
+              <p v-for="error of v$.username.$errors" :key="error.$uid" class="text-error text-sm">{{ error.$message }}</p>
             </div>
 
             <div class="form-input">
               <label for="">Email</label>
               <input type="email" placeholder="Enter Your Email" v-model="email">
-              <p v-for="error of v$.email.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
+              <p v-for="error of v$.email.$errors" :key="error.$uid" class="text-error text-sm">{{ error.$message }}</p>
             </div>
 
             <div class="form-input">
               <label for="">Phone</label>
               <input type="text" placeholder="Enter Your Phone Number" v-model="phone">
-              <p v-for="error of v$.phone.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
+              <p v-for="error of v$.phone.$errors" :key="error.$uid" class="text-error text-sm">{{ error.$message }}</p>
             </div>
 
             <div class="form-input">
               <label for="">Password</label>
               <input type="password" placeholder="Enter Password" v-model="password">
-              <p v-for="error of v$.password.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
+              <p v-for="error of v$.password.$errors" :key="error.$uid" class="text-error text-sm">{{ error.$message }}</p>
             </div>
 
             <div class="form-input">
               <label for="">Confirm Password</label>
               <input type="password" placeholder="Confirm Password" v-model="confirm_password">
-              <p v-for="error of v$.confirm_password.$errors" :key="error.$uid" class="text-error">{{ error.$message }}</p>
+              <p v-for="error of v$.confirm_password.$errors" :key="error.$uid" class="text-error text-sm">{{ error.$message }}</p>
             </div>
           </div>
           <div v-if="!isLoading" class="btn-submit">

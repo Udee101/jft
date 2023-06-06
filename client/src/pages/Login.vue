@@ -8,19 +8,19 @@
         <p class="font-normal text-center text-color-3">Welcome back, Please enter your details</p>
       <div class="login-form">
       
-        <div v-if="invalidCredentials" class="text-center text-error">{{ invalidCredentials }}</div>
+        <div v-if="invalidCredentials" class="text-center text-error text-sm">{{ invalidCredentials }}</div>
 
         <form @submit.prevent="handleSubmit">
           <div class="form-input">
             <label for="">Email or Username</label>
             <input type="text" placeholder="Enter Email or Username" v-model="loginField">
-            <p v-for="error of v$.loginField.$errors" class="text-error">{{ error.$message }}</p>
+            <p v-for="error of v$.loginField.$errors" class="text-error text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="form-input">
             <label for="">Password</label>
             <input type="password" placeholder="Enter Password" v-model="password">
-            <p v-for="error of v$.password.$errors" class="text-error">{{ error.$message }}</p>
+            <p v-for="error of v$.password.$errors" class="text-error text-sm">{{ error.$message }}</p>
           </div>
           
           <div v-if="!isLoading" class="btn-submit hover-opacity">
