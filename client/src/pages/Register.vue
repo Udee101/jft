@@ -154,6 +154,7 @@ export default {
 
 <style scoped>
 .required {
-  border: 1px solid var(--color-9);
+  background: #ea91911e;
+  border: 1px solid #ea91916b;
 }
 </style>
