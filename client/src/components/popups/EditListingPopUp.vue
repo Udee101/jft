@@ -14,57 +14,70 @@
         <form @submit="handleSubmit">
           <div class="form-group">
             <label for="">Tilte</label>
-            <input 
+            <input
+              :class="{ 'required': v$.listing.title.$error }" 
               type="text"
               v-model="listing.title"
             >
+            <p v-for="error of v$.listing.title.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="form-group">
             <label for="">Tags 
               <em class="text-color-3">e.g: js, css, html</em>
             </label>
-            <input 
+            <input
+              :class="{ 'required': v$.listing.tags.$error }" 
               type="text"
               v-model="listing.tags"
             >
+            <p v-for="error of v$.listing.tags.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="form-group">
             <label for="">Company</label>
-            <input 
+            <input
+              :class="{ 'required': v$.listing.company.$error }" 
               type="text"
               v-model="listing.company"
             >
+            <p v-for="error of v$.listing.company.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="form-group">
             <label for="">Location</label>
-            <input 
+            <input
+              :class="{ 'required': v$.listing.location.$error }" 
               type="text"
               v-model="listing.location"
             >
+            <p v-for="error of v$.listing.location.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="form-group">
             <label for="">Website</label>
-            <input 
+            <input
+              :class="{ 'required': v$.listing.website.$error }" 
               type="text"
               v-model="listing.website"
             >
+            <p v-for="error of v$.listing.website.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="form-group">
             <label for="">Email</label>
-            <input 
+            <input
+              :class="{ 'required': v$.listing.email.$error }" 
               type="email"
               v-model="listing.email"
             >
+            <p v-for="error of v$.listing.email.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="form-group">
             <label for="">Description</label>
-            <textarea cols="30" rows="7" v-model="listing.description"></textarea>
+            <textarea cols="30" rows="7" v-model="listing.description" :class="{ 'required': v$.listing.description.$error }"></textarea>
+            <p v-for="error of v$.listing.description.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="text-center mt-1">
@@ -83,7 +96,13 @@
 
 <script>
 import { getListing, updateJobListing } from '../../api/listings';
+import { useVuelidate } from "@vuelidate/core";
+import { required, email, helpers, url } from '@vuelidate/validators';
 export default {
+  setup() {
+    return { v$: useVuelidate() }
+  },
+
   data() {
     return {
       listing: {},
@@ -105,26 +124,47 @@ export default {
       e.preventDefault();
       this.isLoading = true;
 
-      const payload = {
-        listingId: this.listingId,
-        data: {
-          title: this.listing.title,
-          tags: this.listing.tags,
-          company: this.listing.company,
-          location: this.listing.location,
-          website: this.listing.website,
-          email: this.listing.email,
-          description: this.listing.description
+      this.v$.$touch();
+      if (this.v$.$error) {
+        this.isLoading = false;
+        return;
+      } else {
+        
+        const payload = {
+          listingId: this.listingId,
+          data: {
+            title: this.listing.title,
+            tags: this.listing.tags,
+            company: this.listing.company,
+            location: this.listing.location,
+            website: this.listing.website,
+            email: this.listing.email,
+            description: this.listing.description
+          }
         }
+        this.updateJobListing(payload).then((res) => {
+          this.isSuccessful = true; 
+          setTimeout(() => {
+            this.isLoading = false;
+            this.isSuccessful = false;
+            window.location.reload()
+          }, 2000)
+        }).catch((err) => console.log(err.response))
       }
-      this.updateJobListing(payload).then((res) => {
-        this.isSuccessful = true; 
-        setTimeout(() => {
-          this.isLoading = false;
-          this.isSuccessful = false;
-          window.location.reload()
-        }, 2000)
-      }).catch((err) => console.log(err.response))
+    }
+  },
+
+  validations(){
+    return {
+      listing: {
+        title: { required: helpers.withMessage("Job title is required", required) },
+        tags: { required: helpers.withMessage("This field cannot be empty", required) },
+        company: { required: helpers.withMessage("Company name is required", required) },
+        location: { required: helpers.withMessage("This field cannot be empty", required) },
+        website: { required: helpers.withMessage("This field cannot be empty", required), url: helpers.withMessage("Must be a valid URL", url) },
+        email: { required: helpers.withMessage("This field cannot be empty", required), email },
+        description: { required: helpers.withMessage("This field cannot be empty", required) },
+      }
     }
   },
 
@@ -140,5 +180,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.required {
+  background: #ea91911e;
+  border: 1px solid #ea91916b;
+}
 </style>

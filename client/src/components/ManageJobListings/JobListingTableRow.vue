@@ -1,19 +1,23 @@
 <template>
-  <edit-listing-pop-up 
-    v-if="showModal"
-    @close="showModal = false"
-    :listingId="listing.id"
-  >
-  </edit-listing-pop-up>
+  <transition name="fade">
+    <edit-listing-pop-up 
+      v-if="showModal"
+      @close="showModal = false"
+      :listingId="listing.id"
+    >
+    </edit-listing-pop-up>
+  </transition>
   
-  <confirmation-pop-up 
-    v-if="showConfirm" 
-    :confirmationText="'Are you sure you want to delete this job'"
-    :action="'proceed'"
-    @close="showConfirm = false"
-    @proceed="deleteJob"
-  >
-  </confirmation-pop-up>
+  <transition name="fade">
+    <confirmation-pop-up 
+      v-if="showConfirm" 
+      :confirmationText="'Are you sure you want to delete this job'"
+      :action="'proceed'"
+      @close="showConfirm = false"
+      @proceed="deleteJob"
+    >
+    </confirmation-pop-up>
+  </transition>
   <tr>
     <td>{{ index + 1 }}</td>
     <td>{{ listing.title }}</td>

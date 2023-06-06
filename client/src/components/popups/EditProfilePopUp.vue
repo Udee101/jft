@@ -14,18 +14,22 @@
         <form @submit="handleSubmit">
           <div class="form-group">
             <label for="">First Name</label>
-            <input 
+            <input
+              :class="{'required': v$.user.first_name.$error}" 
               type="text"
               v-model="user.first_name"
             >
+            <p v-for="error of v$.user.first_name.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="form-group">
             <label for="">Last Name</label>
-            <input 
+            <input
+              :class="{'required': v$.user.last_name.$error}" 
               type="text"
               v-model="user.last_name"
             >
+            <p v-for="error of v$.user.last_name.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="form-group">
@@ -38,26 +42,32 @@
 
           <div class="form-group">
             <label for="">Username</label>
-            <input 
+            <input
+              :class="{'required': v$.user.username.$error}" 
               type="text"
               v-model="user.username"
             >
+            <p v-for="error of v$.user.username.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="form-group">
             <label for="">Email</label>
-            <input 
+            <input
+              :class="{'required': v$.user.email.$error}" 
               type="email"
               v-model="user.email"
             >
+            <p v-for="error of v$.user.email.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="form-group">
             <label for="">Phone Number</label>
-            <input 
+            <input
+              :class="{'required': v$.user.phone.$error}" 
               type="tel"
               v-model="user.phone"
             >
+            <p v-for="error of v$.user.phone.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="text-center mt-1">
@@ -75,8 +85,12 @@
 </template>
 
 <script>
+import { useVuelidate } from "@vuelidate/core";
+import { required, email, helpers } from '@vuelidate/validators';
 export default {
-  created() {},
+  setup() {
+    return { v$: useVuelidate() }
+  },
   data() {
     return {
       isLoading: false,
@@ -91,32 +105,53 @@ export default {
   methods: {
     handleSubmit(e){
       e.preventDefault();
-
       this.isLoading = true;
-
-      const data = {
-        first_name: this.user.first_name,
-        last_name: this.user.last_name,
-        middle_name: this.user.middle_name,
-        username: this.user.username,
-        email: this.user.email,
-        phone: this.user.phone,
+      
+      this.v$.$touch();
+      if (this.v$.$error) {
+        this.isLoading = false;
+        return;
+      } else {
+        
+        const data = {
+          first_name: this.user.first_name,
+          last_name: this.user.last_name,
+          middle_name: this.user.middle_name,
+          username: this.user.username,
+          email: this.user.email,
+          phone: this.user.phone,
+        }
+  
+        this.$store.dispatch("modifyUser", data).then(() => {
+          this.isSuccessful = true;
+          this.$store.dispatch("fetchUser")
+          setTimeout(() => {
+            this.isLoading = false
+            this.isSuccessful = false
+            this.$emit('close')
+          }, 2000)
+        }).catch(err => console.log(err.response))
       }
-
-      this.$store.dispatch("modifyUser", data).then(() => {
-        this.isSuccessful = true;
-        this.$store.dispatch("fetchUser")
-        setTimeout(() => {
-          this.isLoading = false
-          this.isSuccessful = false
-          this.$emit('close')
-        }, 2000)
-      }).catch(err => console.log(err.response))
-
     }
   },
+
+  validations(){
+    return {
+      user: {
+        first_name: { required: helpers.withMessage("First Name is required", required) },
+        last_name: { required: helpers.withMessage("Last Name is required", required) },
+        username: { required: helpers.withMessage("Username is required", required) },
+        email: { required: helpers.withMessage("Email is required", required), email },
+        phone: { required: helpers.withMessage("Phone number is required", required) },
+      }
+    }
+  }
 };
 </script>
 
 <style scoped>
+.required {
+  background: #ea91911e;
+  border: 1px solid #ea91916b;
+}
 </style>
