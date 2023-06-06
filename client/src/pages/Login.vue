@@ -13,14 +13,14 @@
         <form @submit.prevent="handleSubmit">
           <div class="form-input">
             <label for="">Email or Username</label>
-            <input type="text" placeholder="Enter Email or Username" v-model="loginField">
-            <p v-for="error of v$.loginField.$errors" class="text-error text-sm">{{ error.$message }}</p>
+            <input type="text" placeholder="Enter Email or Username" v-model="loginField" :class="{ 'required': v$.loginField.$error }">
+            <p v-for="error of v$.loginField.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
           <div class="form-input">
             <label for="">Password</label>
-            <input type="password" placeholder="Enter Password" v-model="password">
-            <p v-for="error of v$.password.$errors" class="text-error text-sm">{{ error.$message }}</p>
+            <input type="password" placeholder="Enter Password" v-model="password" :class="{ 'required': v$.password.$error }">
+            <p v-for="error of v$.password.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
           
           <div v-if="!isLoading" class="btn-submit hover-opacity">
@@ -47,9 +47,11 @@
 
 <script>
 import { useVuelidate } from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
+import { required, helpers } from '@vuelidate/validators';
 import { login } from "../api/auth";
 import LogoImg from '../assets/img/logo.svg'
+
+const firstName = "Noah";
 
 export default {
   setup(){
@@ -111,12 +113,15 @@ export default {
 
   validations(){
     return {
-      loginField: { required },
-      password: { required }
+      loginField: { required: helpers.withMessage("Email or Username is reqiured", required) },
+      password: { required: helpers.withMessage("Password is required", required) }
     }
   }
 };
 </script>
 
 <style scoped>
+.required {
+  border: 1px solid var(--color-9);
+}
 </style>
