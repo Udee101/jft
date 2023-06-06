@@ -382,15 +382,21 @@ nav {
 }
 
 .user-nav-enter-active,
-.user-nav-leave-active {
-  transition: all 0.3s ease;
+.user-nav-leave-active,
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s ease;
 }
 
 .user-nav-enter-from,
 .user-nav-leave-to {
   transform: translateX(500px);
   transition: all 0.5s ease;
+}
 
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 .nav-block {

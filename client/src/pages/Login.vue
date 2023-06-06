@@ -51,8 +51,6 @@ import { required, helpers } from '@vuelidate/validators';
 import { login } from "../api/auth";
 import LogoImg from '../assets/img/logo.svg'
 
-const firstName = "Noah";
-
 export default {
   setup(){
     return { v$: useVuelidate() }

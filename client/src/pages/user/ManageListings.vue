@@ -1,8 +1,10 @@
 <template>
-  <create-job-pop-up
-    v-if="showCreate"
-    @close="showCreate = false"
-  ></create-job-pop-up>
+  <transition name="fade">
+    <create-job-pop-up
+      v-if="showCreate"
+      @close="showCreate = false"
+    ></create-job-pop-up>
+  </transition>
   <div class="manage-jobs-wrapper">
     <div class="page-container">
       <div class="page-title mt-1">

@@ -1,10 +1,12 @@
 <template>
-  <edit-profile-pop-up 
-    v-if="showProfileEdit" 
-    :user="user"
-    @close="showProfileEdit = false"
-  >
-  </edit-profile-pop-up>
+  <Transition name="fade">
+    <edit-profile-pop-up 
+      v-if="showProfileEdit" 
+      :user="user"
+      @close="showProfileEdit = false"
+    >
+    </edit-profile-pop-up>
+  </Transition>
   <div class="user-info my-1">
     <p class="text-lg my-1">
       User Info<f-a-i 

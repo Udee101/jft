@@ -1,12 +1,14 @@
 <template>
-  <confirm-action 
-    :confirmationText="'Are you sure you want to log out'"
-    v-if="confirmLogout"
-    :action="'logout'"
-    @logout="doLogout"
-    @close="confirmLogout = false"
-  >
-  </confirm-action>
+  <transition name="fade">
+    <confirm-action 
+      :confirmationText="'Are you sure you want to log out'"
+      v-if="confirmLogout"
+      :action="'logout'"
+      @logout="doLogout"
+      @close="confirmLogout = false"
+    >
+    </confirm-action>
+  </transition>
     <div class="user-nav-container">
       <f-a-i @click="closeNav" icon="fas fa-times" size="2xl" class="close-nav hover-opacity" />
       <div class="user-nav-links">
