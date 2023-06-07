@@ -8,51 +8,9 @@
 
 @font-face {
   font-family: 'Noto-sans';
-  src: url('./webfonts/noto-sans/NotoSans-Italic.ttf');
-  font-weight: normal;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Noto-sans';
   src: url('./webfonts/noto-sans/NotoSans-Bold.ttf');
   font-weight: bold;
   font-style: normal;
-}
-
-@font-face {
-  font-family: 'Noto-sans';
-  src: url('./webfonts/noto-sans/NotoSans-BlackItalic.ttf');
-  font-weight: bold;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Noto-sans';
-  src: url('./webfonts/noto-sans/NotoSans-Light.ttf');
-  font-weight: 200;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Noto-sans';
-  src: url('./webfonts/noto-sans/NotoSans-LightItalic.ttf');
-  font-weight: 200;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Noto-sans';
-  src: url('./webfonts/noto-sans/NotoSans-Thin.ttf');
-  font-weight: 100;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Noto-sans';
-  src: url('./webfonts/noto-sans/NotoSans-ThinItalic.ttf');
-  font-weight: 100;
-  font-style: italic;
 }
 
 /* Install the Roboto font type */
@@ -65,52 +23,11 @@
 
 @font-face {
   font-family: 'Roboto';
-  src: url('./webfonts/roboto/Roboto-Italic.ttf');
-  font-weight: normal;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Roboto';
   src: url('./webfonts/roboto/Roboto-Bold.ttf');
   font-weight: bold;
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'Roboto';
-  src: url('./webfonts/roboto/Roboto-BlackItalic.ttf');
-  font-weight: bold;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url('./webfonts/roboto/Roboto-Light.ttf');
-  font-weight: 200;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url('./webfonts/roboto/Roboto-LightItalic.ttf');
-  font-weight: 200;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url('./webfonts/roboto/Roboto-Thin.ttf');
-  font-weight: 100;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url('./webfonts/roboto/Roboto-ThinItalic.ttf');
-  font-weight: 100;
-  font-style: italic;
-}
 
 :root {
   --site-main-font: 'Noto-sans', 'Roboto';
@@ -164,7 +81,7 @@ th {
 }
 
 tr:nth-child(odd){
-  background: rgba(251, 251, 251, 0.58);
+  background: #fbfbfb94;
 }
 
 textarea{
@@ -374,17 +291,27 @@ nav {
   display: none;
 }
 
-.user{
+.user-container {
+  position: relative;
+}
+
+.user {
   background: whitesmoke;
-  border-radius: 1.2rem;
+  border-radius: 0.5rem;
   padding: 0.5rem;
   cursor: pointer;
+}
+
+.dropdown {
+  display: none;
 }
 
 .user-nav-enter-active,
 .user-nav-leave-active,
 .fade-enter-active,
-.fade-leave-active {
+.fade-leave-active,
+.drop-down-enter-active,
+.drop-down-leave-active {
   transition: all 0.2s ease;
 }
 
@@ -399,6 +326,13 @@ nav {
   opacity: 0;
 }
 
+.drop-down-enter-from,
+.drop-down-leave-to {
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
+  opacity: 0;
+}
+
 .nav-block {
   top: 0;
   right: 0;
@@ -407,7 +341,7 @@ nav {
   z-index: 9;
   position: fixed;
   background: #ffffff;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 2px #0000001a;
   padding: 1rem;
 }
 
@@ -472,7 +406,7 @@ nav {
   padding: 1.5rem;
   border: 1px solid whitesmoke;
   border-radius: 0.5rem;
-  box-shadow: 0rem 5px 10px 5px rgba(245, 245, 245, 0.312);
+  box-shadow: 0rem 5px 10px 5px #f5f5f550;
 }
 
 .reg-form-section{
@@ -483,6 +417,7 @@ nav {
   width: 160px;
   padding-top: 1rem;;
 }
+
 .login-form, .register-form {
   margin: 3rem 0;
 }
@@ -914,7 +849,7 @@ footer>.name {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: 11;
   background-color: rgba(128, 128, 128, 0.446);
 }
 
@@ -1131,6 +1066,23 @@ footer>.name {
   
   .form-input{
     margin: 1.5rem 0;
+  }
+
+  .dropdown {
+    width: 90px;
+    min-height: 25px;
+    display: flex;
+    place-content: center;
+    position: absolute;
+    top: 2.5rem;
+    right: 0.1rem;
+    background: #fff;
+    border-radius: 0.5rem;
+    border: 1px solid whitesmoke;
+  }
+
+  .logout-text {
+    border-bottom: 1px solid whitesmoke;
   }
 }
 
