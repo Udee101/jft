@@ -406,7 +406,7 @@ nav {
   padding: 1.5rem;
   border: 1px solid whitesmoke;
   border-radius: 0.5rem;
-  box-shadow: 0rem 5px 10px 5px #f5f5f550;
+  box-shadow: 0 5px 15px 12px #efeeee34;
 }
 
 .reg-form-section{
@@ -439,6 +439,7 @@ nav {
 .form-input>input {
   min-height: 30px;
   border: 1px solid whitesmoke;
+  background: whitesmoke;
   border-radius: 0.2rem;
   outline: none;
 }
