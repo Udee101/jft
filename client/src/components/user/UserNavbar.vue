@@ -1,4 +1,14 @@
 <template>
+  <transition name="fade">
+    <confirm-action 
+      :confirmationText="'Are you sure you want to log out'"
+      v-if="confirmLogout"
+      :action="'logout'"
+      @logout="doLogout"
+      @close="confirmLogout = false"
+    >
+    </confirm-action>
+  </transition>
   <nav>
     <div class="nav-container">
       <div class="logo text-md font-bold">
@@ -15,8 +25,23 @@
         </ul>
       </div>
 
-      <div class="user">
-        {{ $_.lowerCase(getUsername) }} <f-a-i icon="fas fa-user" class="text-color-1" />
+      <div class="user-container">
+        <div class="user text-color-2 hover-opacity" @click="showLogout = !showLogout">
+          <f-a-i icon="fas fa-user" /> <f-a-i 
+            icon="fas fa-angle-down" 
+            size="sm" 
+            :class="{ 'rotate-180': showLogout }" 
+          />
+        </div>
+        <transition name="drop-down">
+          <div v-if="showLogout" class="dropdown p-1">
+            <p @click="confirmLogout = true" class="text-color-9 text-center hover-opacity cursor-pointer logout-text">
+              <f-a-i 
+                icon="fas fa-arrow-right-from-bracket" 
+              /> Logout
+            </p>
+          </div>
+        </transition>
       </div>
 
       <hamburger-menu></hamburger-menu>
@@ -32,17 +57,16 @@
 
 <script>
 import LogoImg from '../../assets/img/logo.svg'
+import ConfirmationPopUp from '../popups/ConfirmationPopUp.vue';
 import Hamburger from './Hamburger.vue';
 import SideNav from './SideNav.vue';
+import { logout } from '../../api/auth';
 
 export default {
-  created() {
-    this.$store.dispatch("fetchUser")
-  },
-  
   components: {
     "hamburger-menu": Hamburger,
-    "side-nav": SideNav
+    "side-nav": SideNav,
+    "confirm-action": ConfirmationPopUp
   },
   
   computed: {
@@ -57,10 +81,23 @@ export default {
   data() {
     return {
       LogoImg,
+      showLogout: false,
+      confirmLogout: false
+    }
+  },
+
+  methods: {
+    logout,
+    doLogout() {
+      this.logout();
+      window.location.reload();
     }
   },
 };
 </script>
 
-<style>
+<style scoped>
+.rotate-180{
+  transform: rotate(180deg);
+}
 </style>
