@@ -6,11 +6,11 @@ import store from './store/index';
 import router from './router';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
-import { faUser, faCircleNotch, faLocationDot, faPaperPlane, faEnvelope, faBriefcase, faMagnifyingGlass, faPenToSquare, faTrashAlt, faTimes, faArrowRightFromBracket, faGripLines, faAngleLeft, faUpRightFromSquare, faPlus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faCircleNotch, faLocationDot, faPaperPlane, faAt, faEnvelope, faBriefcase, faMagnifyingGlass, faPenToSquare, faTrashAlt, faTimes, faArrowRightFromBracket, faGripLines, faAngleLeft, faUpRightFromSquare, faPlus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faUser, faCircleNotch, faLocationDot, faPaperPlane, faEnvelope, faBriefcase, faMagnifyingGlass, faPenToSquare, faTrashAlt, faTimes, faArrowRightFromBracket, faGripLines, faAngleLeft, faUpRightFromSquare, faPlus, faAngleDown);
+library.add(faUser, faCircleNotch, faLocationDot, faPaperPlane, faAt, faEnvelope, faBriefcase, faMagnifyingGlass, faPenToSquare, faTrashAlt, faTimes, faArrowRightFromBracket, faGripLines, faAngleLeft, faUpRightFromSquare, faPlus, faAngleDown);
 
 const app = createApp(App);
 app.use(router);

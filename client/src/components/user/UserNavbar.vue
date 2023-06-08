@@ -27,7 +27,7 @@
 
       <div class="user-container">
         <div class="user text-color-2 hover-opacity" @click="showLogout = !showLogout">
-          <f-a-i icon="fas fa-user" /> <f-a-i 
+          <f-a-i icon="fas fa-user" size="xl" /> <f-a-i 
             icon="fas fa-angle-down" 
             size="sm" 
             :class="{ 'rotate-180': showLogout }" 
