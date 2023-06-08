@@ -3,7 +3,7 @@
     <page-banner></page-banner>
     <section class="all-listings-container">
       <job-card
-        v-for="(job, index) in listings" 
+        v-for="(job, index) in listings.data" 
         :key="index"
         :job="job"
       >
@@ -24,13 +24,22 @@ import { mapState } from 'vuex';
     },
 
     created() {
-      this.$store.dispatch('jobListing/fetchJobListings')
+      this.$store.dispatch('jobListing/fetchJobListings', {
+        page: this.currentPage,
+        limit: this.limit
+      })
     },
 
     computed: mapState({
       listings: (state) => state.jobListing.jobListings
-    })
+    }),
 
+    data() {
+      return {
+        currentPage: 1,
+        limit: 5
+      }
+    },
   }
 </script>
 

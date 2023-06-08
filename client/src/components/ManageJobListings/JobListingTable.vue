@@ -11,7 +11,7 @@
     <tbody class="text-color-3">
       <jobs-table-row
         v-if="!$_.isEmpty(listings)"
-        v-for="(listing, index) in listings"
+        v-for="(listing, index) in listings.data"
         :listing="listing"
         :index="index"
         v-bind:key="index"
@@ -19,7 +19,7 @@
       </jobs-table-row>
     </tbody>
   </table>
-  <div v-if="$_.isEmpty(listings)" class="text-center text-color-3 my-1">
+  <div v-if="$_.isEmpty(listings.data)" class="text-center text-color-3 my-1">
     <em>No Job(s) Found</em>
   </div>
 </template>
@@ -33,13 +33,23 @@ export default {
   },
 
   created() {
-    this.$store.dispatch("jobListing/fetUserJobListings")
+    this.$store.dispatch("jobListing/fetUserJobListings", {
+      page: this.currentPage,
+      limit: this.limit
+    })
   },
 
   computed: {
     ...mapState({
       listings: (state) => state.jobListing.userListings
     })
+  },
+
+  data() {
+    return {
+      currentPage: 1,
+      limit: 5
+    }
   },
 };
 </script>

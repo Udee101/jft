@@ -2,7 +2,7 @@ import { getJobListings, getUserListings } from "../../api/listings";
 
 const state = () => ({
   jobListings: {},
-  userListings: [],
+  userListings: {},
 });
 
 const mutations = {
@@ -16,16 +16,16 @@ const mutations = {
 };
 
 const actions = {
-  async fetchJobListings({commit}){
-    const listings = await getJobListings();
+  async fetchJobListings({commit}, payload){
+    const listings = await getJobListings(payload.page, payload.limit);
 
-    commit('setJobListings', { listings: listings.data.listings });
+    commit('setJobListings', { listings: listings.data });
   },
 
-  async fetUserJobListings({commit}){
-    const listings = await getUserListings();
+  async fetUserJobListings({commit}, payload){
+    const listings = await getUserListings(payload.page, payload.limit);
 
-    commit('setUserJobListings', {listings: listings.data.listings})
+    commit('setUserJobListings', { listings: listings.data })
   }
 };
 
