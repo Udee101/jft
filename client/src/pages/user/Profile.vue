@@ -1,24 +1,6 @@
 <template>
-  <transition name="fade">
-    <confirm-action 
-      :confirmationText="'Are you sure you want to log out'"
-      v-if="confirmLogout"
-      :action="'logout'"
-      @logout="doLogout"
-      @close="confirmLogout = false"
-    >
-    </confirm-action>
-  </transition>
   <div class="page-container">
     <div class="user-profile-container">
-      <div class="profile-cta mb-1">
-        <div @click="confirmLogout = true" class="cursor-pointer hover-opacity text-error logout">
-          <f-a-i 
-            icon="fas fa-arrow-right-from-bracket" 
-          /> Logout
-        </div>
-      </div>
-
       <div class="user-details">
         <div class="user-initials">
           <f-a-i 
