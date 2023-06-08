@@ -1,55 +1,48 @@
 import { Request, Response } from "express"
-import { User } from "../../entity/User"
 import { Listing } from "../../entity/Listing"
 import { AppDataSource } from "../../data-source"
-import { validate } from "class-validator";
+import { ListingService } from "../../services/ListingService"
+import { validate } from "class-validator"
+import { paginateResponse } from "../../helper/helpers"
 
 export class ListingController {
 
   public static index = async(req:Request, res:Response) => {
 
-    const listings = await AppDataSource.getRepository(Listing).find()
-    return res.status(200).json({ listings: listings })
+    const page = parseInt(req.query.page as string) || 1
+    const limit = parseInt(req.query.limit as string) || 3
+    const totalCount = await ListingService.getAllListingsCount()
+    const listings = await ListingService.getAllListings(page, limit)
+    const paginateListings = paginateResponse(listings, page, limit, totalCount)
 
+    return res.status(200).json(paginateListings)
   };
 
   public static create = async(req:Request, res:Response) => {
     
-    const user = await AppDataSource.getRepository(User).findOneBy({ id: parseInt(req.body.userId) })
-    
-    const listing = new Listing()
-    listing.title = req.body.title
-    listing.tags = req.body.tags
-    listing.company = req.body.company
-    listing.email = req.body.email
-    listing.location = req.body.location
-    listing.website = req.body.website
-    listing.description = req.body.description
-    listing.user = user
-
-    const listingRepository = AppDataSource.getRepository(Listing)
-    const errors = await validate(listing, {validationError: { target: false}})
+    const listing = await ListingService.creatListing(req.body)
+    const errors = await validate(listing, { validationError: { target: false } })
     if (errors.length > 0) {
-      return res.status(400).json({ errors: errors })
+      return res.status(400).json({ error : errors })
     } else {
+      
+      const listingRepository = AppDataSource.getRepository(Listing)
       await listingRepository.insert(listing)
       
       return res.status(201).json({
-        message: "Job Listing created!",
+        message: "Job Listing Created !",
         listing: listing
       })
     }
-    
   };
 
   public static show = async(req:Request, res:Response) => {
 
-    const listing = await AppDataSource.getRepository(Listing).findOneBy({ id: parseInt(req.params.id)})
+    const listing = await AppDataSource.getRepository(Listing).findOneBy({ id: parseInt(req.params.id) })
 
     if (!listing) {
-      return res.status(404).json({ message: 'Listing Not Found'})
+      return res.status(404).json({ message: "Listing Not Found" })
     }
-
     return res.status(200).json({
       listing: listing
     })
@@ -57,47 +50,26 @@ export class ListingController {
 
   public static update = async(req:Request, res:Response) => {
     
-    const listingRepository = AppDataSource.getRepository(Listing)
-
-    const listing = await listingRepository.findOneBy({ id: parseInt(req.params.id) })
+    const listing = await ListingService.updateListing(parseInt(req.params.id), req.body)
 
     if (!listing) {
-      return res.status(404).json({ message: 'Listing Not Found'})
+      return res.status(404).json({ message: "Listing Not Found"})
     }
-
-    await listingRepository
-      .createQueryBuilder()
-      .update(Listing)
-      .set({
-        title: req.body.title ?? listing.title,
-        tags: req.body.tags ?? listing.tags,
-        company: req.body.company ?? listing.company,
-        email: req.body.email ?? listing.email,
-        location: req.body.location ?? listing.location,
-        website: req.body.website ?? listing.website,
-        description: req.body.description ?? listing.description,
-      })
-      .where("id = :id", { id: parseInt(req.params.id)})
-    .execute()
-    
     return res.status(200).json({
-      message: 'Updated Successfully!',
+      message: "Updated Successfully!",
       listing: listing
     })
   };
 
   public static getUserListings = async(req:Request, res:Response) => {
-    
-    const listings = await AppDataSource
-      .getRepository(Listing)
-      .createQueryBuilder("listing")
-      .leftJoin('listing.user', 'user')
-      .where("user.id = :id", { id: parseInt(req.params.id) })
-      .getMany()
 
-    return res.status(200).json({
-      listings: listings
-    })
+    const page = parseInt(req.query.page as string) || 1
+    const limit = parseInt(req.query.limit as string) || 3
+    const totalCount = await ListingService.getUserListingCount(parseInt(req.params.id))
+    const listings = await ListingService.showUserListings(parseInt(req.params.id), page, limit)
+    const paginateListings = paginateResponse(listings, page, limit, totalCount)
+
+    return res.status(200).json(paginateListings)
   };
 
   public static destroy = async(req:Request, res:Response) => {
@@ -107,10 +79,10 @@ export class ListingController {
     const listing = await listingRepository.findOneBy({ id: parseInt(req.params.id) })
 
     if (!listing) {
-      return res.status(404).json({ message: 'Listing Not Found'})
+      return res.status(404).json({ message: "Listing Not Found"})
     }
     await listingRepository.remove(listing)
 
     return res.sendStatus(204)
-  }
+  };
 }
