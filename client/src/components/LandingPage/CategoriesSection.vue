@@ -4,9 +4,7 @@
 			<p class="text-center text-xl pb-1 section-header">Categories</p>
 			<div class="sub-text">
 				<p class="text-center text-color-3">
-					Discover exciting opportunities accross industries and find your
-					perfect career fit. Start your job search today and take the next step
-					towards your professional goals.
+					Discover exciting opportunities across industries and find your perfect career fit.
 				</p>
 			</div>
 

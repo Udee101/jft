@@ -5,7 +5,7 @@
 
 			<div class="jobs">
 					<job-card
-						v-for="(job, index) in listings" 
+						v-for="(job, index) in listings.data" 
 						:key="index"
 						:job="job"
 					>
@@ -15,7 +15,7 @@
 			<div class="text-center my-1">
 				<router-link 
 					:to="{name: 'allListings'}"
-					class="more-jobs hover-opacity font-bold text-color-4" 
+					class="more-jobs hover-opacity font-bold text-color-1" 
 				>
 					Find More Jobs
 				</router-link>
@@ -34,12 +34,22 @@ import { mapState } from 'vuex';
     },
     
     created() {
-      this.$store.dispatch('jobListing/fetchJobListings')
+      this.$store.dispatch('jobListing/fetchJobListings', {
+				page: this.currentPage,
+				limit: this.limit
+			})
     },
 
     computed: mapState({
       listings: (state) => state.jobListing.jobListings
-    })
+    }),
+
+		data() {
+			return {
+				currentPage: 1,
+				limit: 5
+			}
+		},
 
   }
 </script>

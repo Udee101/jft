@@ -1,7 +1,10 @@
 <template>
   <div class="banner-container">
     <div class="banner">
-      <p class="text-xl text-white text-center font-bold">Over +200 Jobs to search from</p>
+      <div class="overlay">
+        <p class="text-xxl text-white text-center font-bold my-0-5">Search Live Jobs</p>
+        <p class="text-center text-white mb-1">Finding your new job just got easier</p>
+      </div>
     </div>
     <div class="search-wrapper">
       <p class="text-md text-color-3">Find Your Desired Job</p>
@@ -16,7 +19,6 @@
 
 <script>
   export default {
-    
   }
 </script>
 
