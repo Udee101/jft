@@ -170,10 +170,6 @@ textarea{
   margin: 1rem;
 }
 
-.m-1-2 {
-  margin: 1.2rem;
-}
-
 .my-1 {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -197,12 +193,12 @@ textarea{
   margin-top: 1rem;
 }
 
-.mr-1 {
-  margin-right: 1rem;
+.mt-2 {
+  margin-top: 2rem;
 }
 
-.mr-2 {
-  margin-right: 2rem;
+.mr-1 {
+  margin-right: 1rem;
 }
 
 .p-0-5 {
@@ -211,10 +207,6 @@ textarea{
 
 .p-1 {
   padding: 1rem;
-}
-
-.p-1-2 {
-  padding: 1.2rem;
 }
 
 .py-1 {
@@ -237,10 +229,6 @@ textarea{
 
 .pr-1 {
   padding-right: 1rem;
-}
-
-.pr-2 {
-  padding-right: 2rem;
 }
 
 main {
@@ -499,9 +487,9 @@ nav {
 
 .hero-cta {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
   grid-template-rows: auto;
-  row-gap: 1rem;
+  column-gap: 0.5rem;
   place-content: center;
 }
 
@@ -509,7 +497,7 @@ nav {
   background-color: var(--color-1);
   color: var(--color-5);
   padding: .7rem;
-  border-radius: 0.2rem;
+  border-radius: 1.5rem;
 }
 
 .hero-cta>.sign-up {
@@ -518,7 +506,7 @@ nav {
   padding: .7rem;
   font-weight: bold;
   border: 1px solid var(--color-1);
-  border-radius: 0.2rem;
+  border-radius: 1.5rem;
 }
 
 /*************************/
@@ -573,7 +561,7 @@ nav {
   grid-template-columns: 1fr;
   grid-template-rows: auto;
   row-gap: 1.5rem;
-  margin: 3rem auto;
+  margin: 2rem auto 4rem;
 }
 
 .job-box {
@@ -612,8 +600,8 @@ nav {
 
 .more-jobs {
   border: 1px solid var(--color-4);
-  border-radius: 0.2rem;
-  padding: 0.75rem;
+  border-radius: 1.5rem;
+  padding: 0.7rem 1.5rem;
   background: var(--color-5);
 }
 
@@ -630,7 +618,7 @@ nav {
   max-width: 1175px;
   margin: 5rem auto;
   padding: 3rem 1rem;
-  background: var(--color-4);
+  background: var(--color-1);
 }
 
 .subscribe-container>.icon {
@@ -655,16 +643,16 @@ nav {
 
 .news-letter-form>form>.input-group {
   width: 100%;
-  height: 35px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: var(--color-5);
-  border-radius: 1rem;
+  border-radius: 1.5rem;
 }
 
 .input-group>input {
-  width: 60%;
+  width: 65%;
   border: none;
   outline: none;
   background: transparent;
@@ -676,11 +664,11 @@ nav {
 }
 
 .input-group>.btn-send {
-  width: 31%;
-  padding: 0.5rem;
-  margin-right: -0.1rem;
-  background: var(--color-4);
-  border-radius: 0 0.7rem 0.7rem 0;
+  width: 25%;
+  padding: 0.75rem;
+  margin-right: -1.3rem;
+  background: var(--color-1);
+  border-radius: 0 1.2rem 1.2rem 0;
   border: none;
 }
 
@@ -763,11 +751,21 @@ footer>.name {
 }
 
 .banner-container>.banner {
-  background: var(--color-4);
+  background: url(../img/question-mark-1872665_1280.jpg) no-repeat;
   width: 100%;
   height: 200px;
   margin: auto;
+  position: relative;
+}
+
+.banner>.overlay{
+  background: #2e50afab;
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -787,24 +785,27 @@ footer>.name {
   row-gap: 1rem;
   padding: 1.5rem 0;
   border: 1px solid whitesmoke;
+  box-shadow: 0 2px 10px 2px #d8d7d748;
   border-radius: 0.5rem;
+  z-index: 1;
 }
 
 .search-wrapper>.search-box {
   width: 90%;
-  height: 32px;
+  height: 40px;
   border: 1px solid whitesmoke;
-  border-radius: 0.7rem;
+  border-radius: 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .search-box>input {
+  appearance: searchfield;
   width: 90%;
   border: none;
   outline: none;
-  border-radius: 0.5rem 0 0 0.5rem;
+  border-radius: 1.2rem 0 0 1.2rem;
 }
 
 .search-box>input[placeholder] {
@@ -814,10 +815,10 @@ footer>.name {
 }
 
 .search-box>.search-btn {
-  background: var(--color-4);
+  background: var(--color-1);
   width: 10%;
-  padding: 0.55rem;
-  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.9rem;
+  border-radius: 0 1.5rem 1.5rem 0;
   cursor: pointer;
 }
 
@@ -1095,7 +1096,8 @@ footer>.name {
     grid-template-columns: repeat(3, 1fr);
   }
   .subscribe-container, 
-  .banner-container>.banner {
+  .banner-container>.banner,
+  .banner>.overlay {
     border-radius: 0.5rem;
   }
 
