@@ -19,9 +19,9 @@ const routes = [
     path: '/',
     name: 'landing',
     component: LandingPage,
-    // meta: {
-    //   requiresAuth: false
-    // }
+    meta: {
+      doesNotRequireAuth: true
+    }
   },
   {
     path: '/login',

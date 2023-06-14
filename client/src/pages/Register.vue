@@ -127,7 +127,8 @@ export default {
             this.isSuccessful = false;
             this.isLoading = false;
             this.$router.push({
-              name: 'login'
+              name: 'login',
+              query: { isReg: true }
             })
           }, 2000)
         }).catch((error) => {

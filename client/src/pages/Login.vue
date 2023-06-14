@@ -10,6 +10,8 @@
       
         <div v-if="invalidCredentials" class="text-center text-error text-sm">{{ invalidCredentials }}</div>
 
+        <div v-if="this.$route.query.isReg" class="text-success text-center" >Registration Successful, Please login</div>
+
         <form @submit.prevent="handleSubmit">
           <div class="form-input">
             <label for="">Email or Username</label>
@@ -94,13 +96,18 @@ export default {
           localStorage.setItem(
             'jft_jwt_creation_time', Date.now()
           );
-          
-          setTimeout(() => {
-            this.isLoading = false;
-            this.$router.push({name: 'allListings'});
-            this.$store.commit("setUserAuthTrue")
-          }, 2000)
-          
+
+          if (localStorage.getItem('jft_jwt') != null) {
+            this.$store.dispatch("fetchUser")
+
+            if (this.$route.query.nextUrl != null) {
+              this.$router.push(this.$route.query.nextUrl);
+              this.$store.commit("setUserAuthTrue")
+            } else {
+              this.$router.push({ name: 'allListings' });
+              this.$store.commit("setUserAuthTrue")
+            }
+          }
         }).catch((error) => {
           this.isLoading = false;
           this.invalidCredentials = error.response.data.message
