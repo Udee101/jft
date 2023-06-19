@@ -76,7 +76,13 @@
 
           <div class="form-group">
             <label for="">Description</label>
-            <textarea cols="30" rows="7" v-model="description" :class="{ 'required': v$.description.$error }"></textarea>
+            <quill-editor 
+              v-model:content="description"
+              contentType="html"
+              placeholder="Job description here...."
+              theme="snow"
+              toolbar="essential"
+            ></quill-editor>
             <p v-for="error of v$.description.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
 
@@ -96,12 +102,18 @@
 
 <script>
 import { createJobListing } from '../../api/listings';
+import { QuillEditor } from '@vueup/vue-quill';
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers, url } from '@vuelidate/validators';
 export default {
   setup() {
     return { v$: useVuelidate() }
-  },  
+  },
+
+  components: {
+    "quill-editor": QuillEditor
+  },
 
   computed: {
     getUserId(){

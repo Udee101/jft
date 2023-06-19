@@ -29,7 +29,7 @@
 
     <div class="desc pt-1">
       <p class="desc-head text-md text-color-3 pb-1">Job description</p>
-      <p class="job-desc">{{ listing.description }}</p>
+      <div v-html="listing.description" class="job-desc"></div>
     </div>
 
     <div class="listing-cta my-1">

@@ -57,10 +57,6 @@ html {
   scroll-behavior: smooth;
 }
 
-ul {
-  list-style: none;
-}
-
 a {
   text-decoration: none;
 }
@@ -727,6 +723,7 @@ footer>.name {
 
 .desc>.job-desc {
   line-height: 24px;
+  padding: 1rem;
 }
 
 .listing-cta {
@@ -856,7 +853,7 @@ footer>.name {
 }
 
 .pop-up-container>.pop-up-box {
-  max-width: 500px;
+  max-width: 700px;
   width: 100%;
   height: 100%;
   position: fixed;
@@ -889,8 +886,7 @@ footer>.name {
   color: var(--color-3);
 }
 
-.form-group>input,
-.form-group>textarea {
+.form-group>input {
   background: whitesmoke;
   border-radius: 0.25rem;
   border: none;
@@ -899,9 +895,24 @@ footer>.name {
   padding: 1rem 0.75rem;
 }
 
-.form-group>textarea {
-  resize: none;
-  padding: 0.5rem;
+.ql-toolbar.ql-snow {
+  border: none !important;
+  border-bottom: 1px solid #d1d5db !important;
+  border-radius: 0.25rem 0.25rem 0 0;
+  background: whitesmoke;
+}
+
+.ql-container.ql-snow {
+  border: none !important;
+  border-radius: 0 0 0.25rem 0.25rem;
+  background: whitesmoke;
+  min-height: 150px;
+  font-family: var(--site-main-font);
+}
+
+.ql-editor {
+  min-height: 150px;
+  font-size: 1rem;
 }
 
 .btn-edit, .btn-create {
