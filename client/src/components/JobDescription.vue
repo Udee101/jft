@@ -48,18 +48,11 @@
 </template>
 
 <script>
-import CompImg from '../assets/img/j4logo.svg'
   export default {
     computed: {
       formatedJobTags() {
         const tagsArray = this.listing.tags?.split(',');
         return tagsArray;
-      }
-    },
-
-    data() {
-      return {
-        CompImg
       }
     },
 
