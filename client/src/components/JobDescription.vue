@@ -34,7 +34,7 @@
 
     <div class="listing-cta my-1">
 
-      <a href="" class="contact text-white font-bold hover-opacity">
+      <a :href="`mailto:${listing.email}`" class="contact text-white font-bold hover-opacity">
         <f-a-i icon="fas fa-envelope" /> 
         Contact Employer
       </a>

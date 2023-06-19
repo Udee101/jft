@@ -38,4 +38,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+ul {
+  list-style: none;
+}
+</style>

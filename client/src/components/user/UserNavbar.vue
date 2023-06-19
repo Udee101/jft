@@ -100,4 +100,7 @@ export default {
 .rotate-180{
   transform: rotate(180deg);
 }
+ul{
+  list-style: none;
+}
 </style>
