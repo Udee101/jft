@@ -4,12 +4,12 @@
 			<p class="text-center text-xl pb-1 section-header">Featured Jobs</p>
 
 			<div class="jobs">
-					<job-card
-						v-for="(job, index) in listings.data" 
-						:key="index"
-						:job="job"
-					>
-					</job-card>
+				<job-card
+					v-for="(job, index) in listings.data" 
+					:key="index"
+					:job="job"
+				>
+				</job-card>
 			</div>
 
 			<div class="text-center my-1">
@@ -36,7 +36,8 @@ import { mapState } from 'vuex';
     created() {
       this.$store.dispatch('jobListing/fetchJobListings', {
 				page: this.currentPage,
-				limit: this.limit
+				limit: this.limit,
+				search: this.search
 			})
     },
 
@@ -47,7 +48,8 @@ import { mapState } from 'vuex';
 		data() {
 			return {
 				currentPage: 1,
-				limit: 5
+				limit: 3,
+				search: ""
 			}
 		},
 

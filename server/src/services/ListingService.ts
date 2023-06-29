@@ -1,21 +1,38 @@
 import { Listing } from "../entity/Listing"
 import { AppDataSource } from "../data-source"
 import { User } from "../entity/User"
-
+import { Brackets } from "typeorm"
 
 export class ListingService {
 
-  public static async getAllListings(page: number, limit: number) {
+  public static async getAllListings(page: number, limit: number, search: any) {
 
     const skip = (page - 1) * limit
-    const listings = await AppDataSource
-      .getRepository(Listing)
-      .createQueryBuilder("listings")
-      .skip(skip)
-      .take(limit)
-      .getMany()
 
-    return listings
+    if (search) {
+      const searchResult = await AppDataSource
+        .getRepository(Listing)
+        .createQueryBuilder("listings")
+        .where("listings.title LIKE :search OR listings.company LIKE :search OR listings.tags LIKE :search", { search: '%' + search + '%' })
+        .skip(skip)
+        .take(limit)
+        .getMany()
+
+      return searchResult
+
+    } else {
+
+      const Alllistings = await AppDataSource
+        .getRepository(Listing)
+        .createQueryBuilder("listings")
+        .skip(skip)
+        .take(limit)
+        .getMany()
+      
+      return Alllistings
+    }
+    
+
   };
 
   public static async creatListing(data: any) {
@@ -64,39 +81,35 @@ export class ListingService {
     }
   };
 
-  public static async showUserListings(userId: number, page: number, limit: number) {
+  public static async showUserListings(userId: number, page: number, limit: number, search: any) {
 
     const skip = (page - 1) * limit
 
-    const listings = await AppDataSource
-      .getRepository(Listing)
-      .createQueryBuilder("listing")
-      .leftJoin("listing.user", "user")
-      .where("user.id = :id", { id: userId })
-      .skip(skip)
-      .take(limit)
-      .getMany()
+    if (search) {
+      const searchResult = await AppDataSource
+        .getRepository(Listing)
+        .createQueryBuilder("listings")
+        .leftJoin("listings.user", "user")
+        .where("user.id = :id", { id: userId })
+        .andWhere("listings.title LIKE :search OR listings.company LIKE :search", { search: '%' + search + '%' })
+        .skip(skip)
+        .take(limit)
+        .getMany()
 
-    return listings
-  };
+      return searchResult
 
-  public static async getUserListingCount(userId: number) {
-    const count = AppDataSource
-      .getRepository(Listing)
-      .createQueryBuilder("listing")
-      .leftJoin("listing.user", "user")
-      .where("user.id = :id", { id: userId })
-      .getCount()
+    } else {
 
-    return count
-  };
+      const listings = await AppDataSource
+        .getRepository(Listing)
+        .createQueryBuilder("listings")
+        .leftJoin("listing.user", "user")
+        .where("user.id = :id", { id: userId })
+        .skip(skip)
+        .take(limit)
+        .getMany()
 
-  public static async getAllListingsCount() {
-    const count = AppDataSource
-      .getRepository(Listing)
-      .createQueryBuilder("listing")
-      .getCount()
-
-    return count
+      return listings
+    }
   };
 }
