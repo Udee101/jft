@@ -3,11 +3,11 @@ import { getHeader, getUserId, url } from './config';
 
 const createJobListing = (data) => http.post(`${url()}/api/v1/listings`, data, getHeader())
 
-const getJobListings = (page, limit) => http.get(`${url()}/api/v1/listings?page=${page}&limit=${limit}`);
+const getJobListings = (page, search, limit) => http.get(`${url()}/api/v1/listings?page=${page}&search=${search}&limit=${limit}`);
 
 const getListing = (listingId) => http.get(`${url()}/api/v1/listings/${listingId}`, getHeader());
 
-const getUserListings = (page, limit) => http.get(`${url()}/api/v1/users/${getUserId()}/listings?page=${page}&limit=${limit}`, getHeader());
+const getUserListings = (page, search, limit) => http.get(`${url()}/api/v1/users/${getUserId()}/listings?page=${page}&search=${search}&limit=${limit}`, getHeader());
 
 const updateJobListing = (payload) => http.post(`${url()}/api/v1/listings/${payload.listingId}`, payload.data, getHeader());
 

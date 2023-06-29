@@ -33,10 +33,7 @@ export default {
   },
 
   created() {
-    this.$store.dispatch("jobListing/fetUserJobListings", {
-      page: this.currentPage,
-      limit: this.limit
-    })
+    this.fetchUserJobs()
   },
 
   computed: {
@@ -48,7 +45,18 @@ export default {
   data() {
     return {
       currentPage: 1,
-      limit: 5
+      limit: 5,
+      search: ""
+    }
+  },
+
+  methods: {
+    fetchUserJobs() {
+      this.$store.dispatch("jobListing/fetUserJobListings", {
+        page: this.currentPage,
+        search: this.search,
+        limit: this.limit,
+      })
     }
   },
 };

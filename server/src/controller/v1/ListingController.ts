@@ -11,8 +11,11 @@ export class ListingController {
 
     const page = parseInt(req.query.page as string) || 1
     const limit = parseInt(req.query.limit as string) || 3
-    const totalCount = await ListingService.getAllListingsCount()
-    const listings = await ListingService.getAllListings(page, limit)
+    const search = req.query.search
+
+    const listings = await ListingService.getAllListings(page, limit, search)
+    const totalCount = listings.length
+    
     const paginateListings = paginateResponse(listings, page, limit, totalCount)
 
     return res.status(200).json(paginateListings)
@@ -65,8 +68,10 @@ export class ListingController {
 
     const page = parseInt(req.query.page as string) || 1
     const limit = parseInt(req.query.limit as string) || 3
-    const totalCount = await ListingService.getUserListingCount(parseInt(req.params.id))
-    const listings = await ListingService.showUserListings(parseInt(req.params.id), page, limit)
+    const search = req.query.search
+
+    const listings = await ListingService.showUserListings(parseInt(req.params.id), page, limit, search)
+    const totalCount = listings.length
     const paginateListings = paginateResponse(listings, page, limit, totalCount)
 
     return res.status(200).json(paginateListings)

@@ -41,16 +41,6 @@
           </div>
 
           <div class="form-group">
-            <label for="">Username</label>
-            <input
-              :class="{'required': v$.user.username.$error}" 
-              type="text"
-              v-model="user.username"
-            >
-            <p v-for="error of v$.user.username.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
-          </div>
-
-          <div class="form-group">
             <label for="">Email</label>
             <input
               :class="{'required': v$.user.email.$error}" 
@@ -117,7 +107,6 @@ export default {
           first_name: this.user.first_name,
           last_name: this.user.last_name,
           middle_name: this.user.middle_name,
-          username: this.user.username,
           email: this.user.email,
           phone: this.user.phone,
         }
@@ -140,7 +129,6 @@ export default {
       user: {
         first_name: { required: helpers.withMessage("First Name is required", required) },
         last_name: { required: helpers.withMessage("Last Name is required", required) },
-        username: { required: helpers.withMessage("Username is required", required) },
         email: { required: helpers.withMessage("Email is required", required), email },
         phone: { required: helpers.withMessage("Phone number is required", required) },
       }

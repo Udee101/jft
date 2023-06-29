@@ -14,5 +14,13 @@ export const getUserId = () => {
 }
 
 export const url = () => {
-  return 'https://jftapi.onrender.com'
+  let apiUrl = ''
+  
+  if (process.env.NODE_ENV === 'production') {
+    apiUrl = 'https://jftapi.onrender.com'
+  } else {
+    apiUrl = 'http://localhost:5001'
+  }
+
+  return apiUrl
 }

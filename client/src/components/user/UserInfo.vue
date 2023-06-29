@@ -32,11 +32,6 @@
       </div>
 
       <div>
-        <div class="text-color-2">Username</div>
-        <div class="text-color-3 text-md">{{user.username}}</div>
-      </div>
-
-      <div>
         <div class="text-color-2">Email</div>
         <div class="text-color-3 text-md">{{user.email}}</div>
       </div>

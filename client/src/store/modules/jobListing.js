@@ -17,13 +17,13 @@ const mutations = {
 
 const actions = {
   async fetchJobListings({commit}, payload){
-    const listings = await getJobListings(payload.page, payload.limit);
+    const listings = await getJobListings(payload.page, payload.search,payload.limit);
 
     commit('setJobListings', { listings: listings.data });
   },
 
   async fetUserJobListings({commit}, payload){
-    const listings = await getUserListings(payload.page, payload.limit);
+    const listings = await getUserListings(payload.page, payload.search, payload.limit);
 
     commit('setUserJobListings', { listings: listings.data })
   }
