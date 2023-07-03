@@ -37,6 +37,12 @@ Install dependencies
   npm install
 ```
 
+Create the .env file for the environment variables.
+```bash
+  touch .env
+```
+Input all the necessary environment variables used in the server.
+
 Start the backend
 
 ```bash
@@ -46,7 +52,7 @@ Start the backend
 The backend will start running on port 5001,then display this message in the console: 
 
 ```console
-  Data source has been initialized
+  Data Source has been initialized
 ```
 
 Go to the client directory
