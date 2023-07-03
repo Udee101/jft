@@ -40,8 +40,10 @@ export default {
     fetchJobListing(){
       this.isLoading = true
       this.getListing(this.$route.params.listingId).then((res) => {
-        this.isLoading = false
-        this.listing = res.data.listing
+        setTimeout(() => {
+          this.isLoading = false
+          this.listing = res.data.listing
+        }, 2000)
       }).catch((error) => console.log(error.response))
     }
   },
