@@ -22,7 +22,7 @@ For a new user, the user will register by filling the registration form, then lo
 Clone the project
 
 ```bash
-  git clone https://github.com/Udee101/jft
+  git clone https://github.com/Udee101/jft.git
 ```
 
 Go to the server directory
