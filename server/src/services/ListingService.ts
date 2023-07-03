@@ -103,7 +103,7 @@ export class ListingService {
       const listings = await AppDataSource
         .getRepository(Listing)
         .createQueryBuilder("listings")
-        .leftJoin("listing.user", "user")
+        .leftJoin("listings.user", "user")
         .where("user.id = :id", { id: userId })
         .skip(skip)
         .take(limit)
