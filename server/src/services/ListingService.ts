@@ -1,6 +1,6 @@
-import { Listing } from "../entity/Listing"
+import { Listing } from "../model/Listing"
 import { AppDataSource } from "../data-source"
-import { User } from "../entity/User"
+import { User } from "../model/User"
 import { Brackets } from "typeorm"
 
 export class ListingService {

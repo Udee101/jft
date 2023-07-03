@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv"
 import { Request, Response } from "express"
 import { AppDataSource } from "../../data-source"
-import { User } from "../../entity/User"
+import { User } from "../../model/User"
 import * as bcrypt from "bcrypt"
 import * as jwt from "jsonwebtoken"
 import { validate } from "class-validator"

@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { Listing } from "../../entity/Listing"
+import { Listing } from "../../model/Listing"
 import { AppDataSource } from "../../data-source"
 import { ListingService } from "../../services/ListingService"
 import { validate } from "class-validator"
