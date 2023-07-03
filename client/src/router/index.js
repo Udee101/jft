@@ -24,7 +24,7 @@ const invalidateJWT = () => {
 
 router.beforeEach((to, from, next) => {
 
-  invalidateJWT()
+  // invalidateJWT()
 
   const authenticated = localStorage.getItem('jft_jwt');
 

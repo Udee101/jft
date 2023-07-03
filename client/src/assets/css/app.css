@@ -717,7 +717,7 @@ footer>.name {
 }
 
 .desc{
-  border-top: 1px solid whitesmoke;
+  /* border-top: 1px solid whitesmoke; */
   max-width: 680px;
 }
 

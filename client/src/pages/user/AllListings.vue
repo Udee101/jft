@@ -1,50 +1,61 @@
 <template>
-  <div class="all-listings-wrapper">
-    <div class="banner-container">
-      <div class="banner">
-        <div class="overlay">
-          <p class="text-xxl text-white text-center font-bold my-0-5">Search Live Jobs</p>
-          <p class="text-center text-white mb-1">Finding your new job just got easier</p>
+  <template v-if="isLoading">
+    <page-loader></page-loader>
+  </template>
+  <template v-else>
+    <div class="all-listings-wrapper">
+      <div class="banner-container">
+        <div class="banner">
+          <div class="overlay">
+            <p class="text-xxl text-white text-center font-bold my-0-5">Search Live Jobs</p>
+            <p class="text-center text-white mb-1">Finding your new job just got easier</p>
+          </div>
+        </div>
+        <div class="search-wrapper">
+          <p class="text-md text-color-3">Find Your Desired Job</p>
+          <div class="search-box">
+            <search-box 
+              v-model:search="search"
+              @search-job="fetchJobs"
+            >
+            </search-box>
+          </div>
         </div>
       </div>
-      <div class="search-wrapper">
-        <p class="text-md text-color-3">Find Your Desired Job</p>
-        <div class="search-box">
-          <search-box 
-            v-model:search="search"
-            @search-job="fetchJobs"
-          >
-          </search-box>
-        </div>
-      </div>
-    </div>
 
-    <section class="all-listings-container">
-      <job-card
-        v-if="!$_.isEmpty(listings.data)"
-        v-for="(job, index) in listings.data" 
-        :key="index"
-        :job="job"
-      >
-      </job-card>
-      <div v-if="$_.isEmpty(listings.data)" class="text-center text-color-3"><em>No Job(s) found</em></div>
-		</section>
-  </div>
+      <section class="all-listings-container">
+        <job-card
+          v-if="!$_.isEmpty(listings.data)"
+          v-for="(job, index) in listings.data" 
+          :key="index"
+          :job="job"
+        >
+        </job-card>
+        <div v-if="$_.isEmpty(listings.data)" class="text-center text-color-3"><em>No Job(s) found</em></div>
+      </section>
+    </div>
+  </template>
 </template>
 
 <script>
 import Search from '../../components/Search.vue';
 import JobCard from '../../components/JobCard.vue';
+import Loader from '../../components/Loader.vue'
 import { mapState } from 'vuex';
 
   export default {
     components: {
       "search-box": Search,
-      "job-card": JobCard
+      "job-card": JobCard,
+      "page-loader": Loader
     },
 
     created() {
-      this.fetchJobs()
+      this.isLoading = true;
+      setTimeout(() => {
+        this.isLoading = false;
+        this.fetchJobs()
+      }, 2000)
     },
 
     computed: mapState({
@@ -55,7 +66,8 @@ import { mapState } from 'vuex';
       return {
         currentPage: 1,
         limit: 5,
-        search: ""
+        search: "",
+        isLoading: false,
       }
     },
 
