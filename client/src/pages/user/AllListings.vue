@@ -1,5 +1,5 @@
 <template>
-  <template v-if="isLoading">
+  <template v-if="isPageLoading">
     <page-loader></page-loader>
   </template>
   <template v-else>
@@ -23,7 +23,11 @@
         </div>
       </div>
 
-      <section class="all-listings-container">
+      <div v-if="isDataLoading" class="text-center text-color-1 translate-y-200 ">
+        <f-a-i icon="fas fa-circle-notch" spin size="2xl" />
+      </div>
+
+      <section v-else class="all-listings-container">
         <job-card
           v-if="!$_.isEmpty(listings.data)"
           v-for="(job, index) in listings.data" 
@@ -51,9 +55,9 @@ import { mapState } from 'vuex';
     },
 
     created() {
-      this.isLoading = true;
+      this.isPageLoading = true;
       setTimeout(() => {
-        this.isLoading = false;
+        this.isPageLoading = false;
         this.fetchJobs()
       }, 2000)
     },
@@ -67,17 +71,23 @@ import { mapState } from 'vuex';
         currentPage: 1,
         limit: 5,
         search: "",
-        isLoading: false,
+        isPageLoading: false,
+        isDataLoading: false,
       }
     },
 
     methods: {
       fetchJobs(){
-        this.$store.dispatch('jobListing/fetchJobListings', {
-          page: this.currentPage,
-          limit: this.limit,
-          search: this.search
-        })
+        this.isDataLoading = true;
+
+        setTimeout(() => {
+          this.isDataLoading = false;
+          this.$store.dispatch('jobListing/fetchJobListings', {
+            page: this.currentPage,
+            limit: this.limit,
+            search: this.search
+          })
+        }, 2000)
       }
     },
   }

@@ -1,5 +1,8 @@
 <template>
-  <table>
+  <div v-if="isLoading" class="text-center text-color-1 mt-2 py-1">
+    <f-a-i icon="fas fa-circle-notch" spin size="2xl" />
+  </div>
+  <table v-else>
     <thead>
       <tr>
         <th>#</th>
@@ -46,17 +49,23 @@ export default {
     return {
       currentPage: 1,
       limit: 5,
-      search: ""
+      search: "",
+      isLoading: false,
     }
   },
 
   methods: {
     fetchUserJobs() {
-      this.$store.dispatch("jobListing/fetUserJobListings", {
-        page: this.currentPage,
-        search: this.search,
-        limit: this.limit,
-      })
+      this.isLoading = true;
+
+      setTimeout(() => {
+        this.isLoading = false;
+        this.$store.dispatch("jobListing/fetUserJobListings", {
+          page: this.currentPage,
+          search: this.search,
+          limit: this.limit,
+        })
+      , 2000})
     }
   },
 };
