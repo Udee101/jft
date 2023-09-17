@@ -155,10 +155,15 @@ export default {
         }
         this.updateJobListing(payload).then((res) => {
           this.isSuccessful = true; 
+          this.$store.dispatch("jobListing/fetUserJobListings", {
+            page: this.currentPage,
+            search: this.search,
+            limit: this.limit,
+          });
           setTimeout(() => {
             this.isLoading = false;
             this.isSuccessful = false;
-            window.location.reload()
+            this.$emit('close')
           }, 2000)
         }).catch((err) => console.log(err.response))
       }
@@ -187,6 +192,18 @@ export default {
     listingId: {
       type: Number
     },
+    currentPage: {
+      type: Number,
+      required: true
+    },
+    limit: {
+      type: Number,
+      required: true
+    },
+    search: {
+      type: String,
+      required: true
+    }
   },
 };
 </script>

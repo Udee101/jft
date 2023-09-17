@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, UpdateDateColumn } from "typeorm"
 import { User } from "./User"
-import { IsEmail, IsNotEmpty, IsUrl } from "class-validator"
 
 @Entity('listings')
 export class Listing {
@@ -9,33 +8,24 @@ export class Listing {
   id: number
 
   @Column()
-  @IsNotEmpty()
   title: string
   
   @Column()
-  @IsNotEmpty()
   tags: string
   
   @Column()
-  @IsNotEmpty()
   company: string
   
   @Column()
-  @IsNotEmpty()
   location: string
 
   @Column()
-  @IsEmail()
-  @IsNotEmpty()
   email: string
   
   @Column()
-  @IsUrl()
-  @IsNotEmpty()
   website: string
   
   @Column()
-  @IsNotEmpty()
   description: string
   
   @CreateDateColumn()

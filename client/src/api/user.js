@@ -3,6 +3,6 @@ import { getHeader, getUserId, url } from './config';
 
 const getUser = () => http.get(`${url()}/api/v1/users/${getUserId()}`, getHeader());
 
-const updateUser = (data) => http.post(`${url()}/api/v1/users/${getUserId()}`, data, getHeader());
+const updateUser = (data) => http.put(`${url()}/api/v1/users/${getUserId()}`, data, getHeader());
 
 export { getUser, updateUser }

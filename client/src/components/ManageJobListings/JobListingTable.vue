@@ -15,9 +15,12 @@
       <jobs-table-row
         v-if="!$_.isEmpty(listings)"
         v-for="(listing, index) in listings.data"
+        v-bind:key="index"
         :listing="listing"
         :index="index"
-        v-bind:key="index"
+        :currentPage="currentPage"
+        :limit="limit"
+        :search="search"
       >
       </jobs-table-row>
     </tbody>
