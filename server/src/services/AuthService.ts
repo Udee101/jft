@@ -64,7 +64,7 @@ export class AuthService {
       })
   
       if (!user) {
-        return { status_code: 400, message: "Invalid Credentials" }
+        return { status_code: 400, error: "Invalid Credentials" }
       }
   
       const passwordCheck = await bcrypt.compare(data.body.password, user.password)
