@@ -11,7 +11,7 @@ router.post('/login', userLoginValidation, AuthController.login)
 
 router.use('/users/:id', authenticateToken)
 router.get('/users/:id', UserController.getUser)
-router.post('/users/:id', UserController.update)
+router.put('/users/:id', UserController.update)
 router.get('/users/:id/listings', ListingController.getUserListings)
 
 router.get('/listings', ListingController.index)
