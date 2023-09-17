@@ -1,70 +1,100 @@
 import { Listing } from "../model/Listing"
 import { AppDataSource } from "../data-source"
 import { User } from "../model/User"
-import { Brackets } from "typeorm"
+import { validationResult } from "express-validator"
+import { paginateResponse } from "../helper/helpers"
 
 export class ListingService {
+  private static listingRepository = AppDataSource.getRepository(Listing)
 
-  public static async getAllListings(page: number, limit: number, search: any) {
-
-    const skip = (page - 1) * limit
-
-    if (search) {
-      const searchResult = await AppDataSource
-        .getRepository(Listing)
-        .createQueryBuilder("listings")
-        .where("listings.title LIKE :search OR listings.company LIKE :search OR listings.tags LIKE :search", { search: '%' + search + '%' })
-        .skip(skip)
-        .take(limit)
-        .getMany()
-
-      return searchResult
-
-    } else {
-
-      const Alllistings = await AppDataSource
-        .getRepository(Listing)
+  public static async getAllListings(req: any) {
+    try {
+      const page = parseInt(req.query.page as string) || 1
+      const limit = parseInt(req.query.limit as string) || 3
+      const skip = (page - 1) * limit
+      const search = req.query.search
+  
+      let listings = await this.listingRepository
         .createQueryBuilder("listings")
         .skip(skip)
         .take(limit)
         .getMany()
+        
+      if (search) {
+        listings = await this.listingRepository
+          .createQueryBuilder("listings")
+          .where("listings.title LIKE :search OR listings.company LIKE :search OR listings.tags LIKE :search", { search: '%' + search + '%' })
+          .skip(skip)
+          .take(limit)
+          .getMany()
+      }
+      const totalCount = listings.length
+      const paginateListings = paginateResponse(listings, page, limit, totalCount)
+  
+      return { status_code: 200, ...paginateListings }
       
-      return Alllistings
+    } catch (error) {
+      return { status_code: 500, error: "An error occured while fetching job listings" }
     }
-    
-
   };
 
-  public static async creatListing(data: any) {
-    
-    const user = await AppDataSource.getRepository(User).findOneBy({ id: parseInt(data.userId) })
-    
-    const listing = new Listing()
-    listing.title = data.title
-    listing.tags = data.tags
-    listing.company = data.company
-    listing.email = data.email
-    listing.location = data.location
-    listing.website = data.website
-    listing.description = data.description
-    listing.user = user
+  public static async getListing(id: number) {
+    try {
+      const listing = await this.listingRepository.findOneBy({ id: id })
+      if (!listing) {
+        return { status_code: 404, error: "Listing Not Found" }
+      }
 
-    return listing
+      return { status_code: 200, listing: listing}
+      
+    } catch (error) {
+      return { status_code: 500, error: "An error occured while retrieving listing details" }
+    }
+  };
+
+  public static async creatListing(req: any) {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return { status_code: 400, error: errors.array() }
+      }
+  
+      const user = await AppDataSource.getRepository(User).findOneBy({ id: parseInt(req.body.userId) })
+      
+      const listing = new Listing()
+      listing.title = req.body.title
+      listing.tags = req.body.tags
+      listing.company = req.body.company
+      listing.email = req.body.email
+      listing.location = req.body.location
+      listing.website = req.body.website
+      listing.description = req.body.description
+      listing.user = user
+  
+      await this.listingRepository.insert(listing)
+  
+      return {
+        status_code: 201,
+        message: "Job listing created!",
+        listing: listing
+      }
+      
+    } catch (error) {
+      return { status_code: 500, error: "An error occured while creating job listing"}
+    }
   };
 
   public static async updateListing(listingId: number, data: any) {
-    
-    const listingRepository = AppDataSource.getRepository(Listing)
+    try {
+      let listing = await this.listingRepository.findOneBy({ id: listingId })
+      if (!listing) {
+        return { status_code: 404, error: "Listing not found"}
+      }
 
-    const listing = await listingRepository.findOneBy({ id: listingId })
-
-    if (!listing) {
-      return null
-    } else {
-      
-      await listingRepository
+      await this.listingRepository
       .createQueryBuilder()
       .update(Listing)
+      .where("id = :id", { id: listingId })
       .set({
         title: data.title ?? listing.title,
         tags: data.tags ?? listing.tags,
@@ -74,42 +104,67 @@ export class ListingService {
         website: data.website ?? listing.website,
         description: data.description ?? listing.description,
       })
-      .where("id = :id", { id: listingId })
       .execute()
+
+      listing = await this.listingRepository.findOneBy({ id: listingId })
+      return { 
+        status_code: 200,
+        message: "Updated Successfully!",
+        listing: listing 
+      }
       
-      return await listingRepository.findOneBy({ id: listingId })
+    } catch (error) {
+      return { status_code: 500, error: "An error occured while updating listing" }
     }
   };
 
-  public static async showUserListings(userId: number, page: number, limit: number, search: any) {
-
-    const skip = (page - 1) * limit
-
-    if (search) {
-      const searchResult = await AppDataSource
-        .getRepository(Listing)
+  public static async showUserListings(req: any) {
+    try {
+      const page = parseInt(req.query.page as string) || 1
+      const limit = parseInt(req.query.limit as string) || 3
+      const skip = (page - 1) * limit
+      const search = req.query.search
+  
+      let listings = await this.listingRepository
         .createQueryBuilder("listings")
         .leftJoin("listings.user", "user")
-        .where("user.id = :id", { id: userId })
-        .andWhere("listings.title LIKE :search OR listings.company LIKE :search", { search: '%' + search + '%' })
+        .where("user.id = :id", { id: parseInt(req.params.id) })
         .skip(skip)
         .take(limit)
         .getMany()
-
-      return searchResult
-
-    } else {
-
-      const listings = await AppDataSource
-        .getRepository(Listing)
-        .createQueryBuilder("listings")
-        .leftJoin("listings.user", "user")
-        .where("user.id = :id", { id: userId })
-        .skip(skip)
-        .take(limit)
-        .getMany()
-
-      return listings
+  
+      if (search) {
+        listings = await this.listingRepository
+          .createQueryBuilder("listings")
+          .leftJoin("listings.user", "user")
+          .where("user.id = :id", { id: parseInt(req.params.id) })
+          .andWhere("listings.title LIKE :search OR listings.company LIKE :search", { search: '%' + search + '%' })
+          .skip(skip)
+          .take(limit)
+          .getMany()
+      }
+  
+      const totalCount = listings.length
+      const paginateListings = paginateResponse(listings, page, limit, totalCount)
+      return { status_code: 200, ...paginateListings }
+      
+    } catch (error) {
+      return { status_code: 500, error: "An error occured while retrieving user listings" }
     }
   };
+
+  public static async deleteListing(listingId: number) {
+    try {
+      const listing = await this.listingRepository.findOneBy({ id: listingId })
+      if (!listing) {
+        return { status_code: 404, error: "Job listing not found" }
+      }
+
+      await this.listingRepository.remove(listing)
+      return { status_code: 200, message: "Job listing Deleted!" }
+
+    } catch (error) {
+      return { status_code: 500, error: "An error occured while deleting job listing" }
+    }
+  }
 }
