@@ -4,6 +4,9 @@
       v-if="showModal"
       @close="showModal = false"
       :listingId="listing.id"
+      :currentPage="currentPage"
+      :limit="limit"
+      :search="search"
     >
     </edit-listing-pop-up>
   </transition>
@@ -24,12 +27,12 @@
     <td>{{ listing.company }}</td>
     <td>
       <div v-if="!isLoading" class="actions-col">
-        <p 
+        <div 
           @click="showModal = true"
           class="edit text-color-4 text-center cursor-pointer hover-opacity"
         >
           <f-a-i icon="fas fa-pen-to-square" /> Edit
-        </p>
+        </div>
         <p 
           @click="showConfirm = true"
           class="delete text-color-9 text-center cursor-pointer hover-opacity"
@@ -74,7 +77,11 @@ export default {
 
         setTimeout(() => {
           this.isLoading = false
-          this.$store.dispatch("jobListing/fetUserJobListings")
+          this.$store.dispatch("jobListing/fetUserJobListings", {
+            page: this.currentPage,
+            search: this.search,
+            limit: this.limit,
+          })
         }, 2000)
 
       }).catch((err) => console.log(err.response))
@@ -86,6 +93,18 @@ export default {
     },
     index: {
       type: Number
+    },
+    currentPage: {
+      type: Number,
+      required: true
+    },
+    limit: {
+      type: Number,
+      required: true
+    },
+    search: {
+      type: String,
+      required: true
     }
   },
 };

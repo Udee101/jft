@@ -110,7 +110,7 @@ export default {
           }
         }).catch((error) => {
           this.isLoading = false;
-          this.invalidCredentials = error.response.data.message
+          this.invalidCredentials = error.response.data.error
         })
       }
     }
