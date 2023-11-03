@@ -27,6 +27,7 @@
           
           <div v-if="!isLoading" class="btn-submit hover-opacity">
             <button type="submit" class="text-base font-bold">Login</button>
+            <button @click="loginAsTestUser" class="text-base font-bold">Login as test user</button>
           </div>
 
           <div v-if="isLoading" class="text-center my-1">
@@ -86,35 +87,49 @@ export default {
           usernameOrEmail: this.loginField,
           password: this.password
         }
-
-        this.login(data).then((response) => {
-          
-          const token = response.data.token;
-          
-          localStorage.setItem('jft_user', JSON.stringify(response.data.user));
-          localStorage.setItem('jft_jwt', token);
-          localStorage.setItem(
-            'jft_jwt_creation_time', Date.now()
-          );
-
-          if (localStorage.getItem('jft_jwt') != null) {
-            this.$store.dispatch("fetchUser")
-
-            if (this.$route.query.nextUrl != null) {
-              this.$router.push(this.$route.query.nextUrl);
-              this.$store.commit("setUserAuthTrue")
-            } else {
-              this.$router.push({ name: 'allListings' });
-              this.$store.commit("setUserAuthTrue")
-            }
-          }
-        }).catch((error) => {
-          this.isLoading = false;
-          this.invalidCredentials = error.response.data.error
-        })
+        this.makeLoginRequest(data)
       }
+    },
+
+    loginAsTestUser() {
+      this.isLoading = true;
+      // this.invalidCredentials = "";
+      const data = {
+        usernameOrEmail: "testUser1",
+        password: "1234567"
+      }
+      this.makeLoginRequest(data)
+    },
+
+    makeLoginRequest(data) {
+      this.login(data).then((response) => {
+        
+        const token = response.data.token;
+        
+        localStorage.setItem('jft_user', JSON.stringify(response.data.user));
+        localStorage.setItem('jft_jwt', token);
+        localStorage.setItem(
+          'jft_jwt_creation_time', Date.now()
+        );
+
+        if (localStorage.getItem('jft_jwt') != null) {
+          this.$store.dispatch("fetchUser")
+
+          if (this.$route.query.nextUrl != null) {
+            this.$router.push(this.$route.query.nextUrl);
+            this.$store.commit("setUserAuthTrue")
+          } else {
+            this.$router.push({ name: 'allListings' });
+            this.$store.commit("setUserAuthTrue")
+          }
+        }
+      }).catch((error) => {
+        this.isLoading = false;
+        this.invalidCredentials = error.response.data.error
+      })
     }
   },
+
 
   validations(){
     return {

@@ -439,8 +439,11 @@ nav {
 
 .btn-submit {
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
   place-content: center;
+  justify-content: center;
   margin-top: 2rem;
 }
 
@@ -449,8 +452,6 @@ nav {
   color: var(--color-5);
   border: none;
   padding: 1rem;
-  max-width: 320px;
-  width: 100%;
   border-radius: 0.5rem;
   cursor: pointer;
 }
