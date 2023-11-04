@@ -14,7 +14,9 @@
           {{ job.location }}
         </p>
       </div>
-    <p :class="`date-posted ${styleDaysPosted}`">{{ getTimeDifferenceSinceWhenPosted }} {{ getDateText(getTimeDifferenceSinceWhenPosted) }} </p>
+    <p v-if="getTimeDifferenceSinceWhenPosted < 60" :class="`date-posted ${styleDaysPosted}`">{{ getTimeDifferenceSinceWhenPosted }} {{ getDateText(getTimeDifferenceSinceWhenPosted) }} </p>
+
+    <p v-else :class="`date-posted ${styleDaysPosted}`">long time ago</p>
     </router-link>
   </div>
 </template>
