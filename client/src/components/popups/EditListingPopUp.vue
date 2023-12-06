@@ -105,6 +105,7 @@ import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers, url } from '@vuelidate/validators';
+import { validationMessage } from '../../helpers';
 export default {
   setup() {
     return { v$: useVuelidate() }
@@ -118,7 +119,8 @@ export default {
     return {
       listing: {},
       isLoading: false,
-      isSuccessful: false
+      isSuccessful: false,
+      validationMessage
     };
   },
 
@@ -173,13 +175,13 @@ export default {
   validations(){
     return {
       listing: {
-        title: { required: helpers.withMessage("Job title is required", required) },
-        tags: { required: helpers.withMessage("This field cannot be empty", required) },
-        company: { required: helpers.withMessage("Company name is required", required) },
-        location: { required: helpers.withMessage("This field cannot be empty", required) },
-        website: { required: helpers.withMessage("This field cannot be empty", required), url: helpers.withMessage("Must be a valid URL", url) },
-        email: { required: helpers.withMessage("This field cannot be empty", required), email },
-        description: { required: helpers.withMessage("This field cannot be empty", required) },
+        title: { required: helpers.withMessage(validationMessage.JOB_TITLE_REQUIRED, required) },
+        tags: { required: helpers.withMessage(validationMessage.FIELD_CANNOT_BE_EMPTY, required) },
+        company: { required: helpers.withMessage(validationMessage.COMPANY_NAME_REQUIRED, required) },
+        location: { required: helpers.withMessage(validationMessage.FIELD_CANNOT_BE_EMPTY, required) },
+        website: { required: helpers.withMessage(validationMessage.FIELD_CANNOT_BE_EMPTY, required), url: helpers.withMessage(validationMessage.VALID_URL, url) },
+        email: { required: helpers.withMessage(validationMessage.FIELD_CANNOT_BE_EMPTY, required), email },
+        description: { required: helpers.withMessage(validationMessage.FIELD_CANNOT_BE_EMPTY, required) },
       }
     }
   },

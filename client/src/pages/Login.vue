@@ -25,9 +25,9 @@
             <p v-for="error of v$.password.$errors" class="text-color-9 text-sm">{{ error.$message }}</p>
           </div>
           
-          <div v-if="!isLoading" class="btn-submit hover-opacity">
-            <button type="submit" class="text-base font-bold">Login</button>
-            <button @click="loginAsTestUser" class="text-base font-bold">Login as test user</button>
+          <div v-if="!isLoading" class="btn-submit">
+            <button type="submit" class="text-base font-bold hover-opacity">Login</button>
+            <button @click="loginAsTestUser" class="text-base font-bold hover-opacity">Login as test user</button>
           </div>
 
           <div v-if="isLoading" class="text-center my-1">
@@ -53,6 +53,7 @@ import { useVuelidate } from '@vuelidate/core';
 import { required, helpers } from '@vuelidate/validators';
 import { login } from "../api/auth";
 import LogoImg from '../assets/img/logo.svg'
+import { validationMessage } from '../helpers';
 
 export default {
   setup(){
@@ -67,6 +68,7 @@ export default {
       isSuccessful: false,
       invalidCredentials: "",
       isLoading: false,
+      validationMessage
     }
   },
 
@@ -133,8 +135,8 @@ export default {
 
   validations(){
     return {
-      loginField: { required: helpers.withMessage("Email or Username is reqiured", required) },
-      password: { required: helpers.withMessage("Password is required", required) }
+      loginField: { required: helpers.withMessage(validationMessage.EMAIL_OR_USERNAME_REQUIRED, required) },
+      password: { required: helpers.withMessage(validationMessage.PASSWORD_REQUIRED, required) }
     }
   }
 };

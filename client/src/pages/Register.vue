@@ -81,6 +81,7 @@ import { useVuelidate } from '@vuelidate/core';
 import { required, email, sameAs, helpers } from '@vuelidate/validators';
 import { register } from '../api/auth';
 import LogoImg from '../assets/img/logo.svg';
+import { validationMessage } from '../helpers';
 export default {
   setup() {
     return { v$: useVuelidate() }
@@ -98,6 +99,7 @@ export default {
       confirm_password: "",
       isSuccessful: false,
       isLoading: false,
+      validationMessage
     }
   },
 
@@ -141,12 +143,12 @@ export default {
 
   validations() {
     return {
-      first_name: { required: helpers.withMessage("First Name is required", required), $autoDirty: true },
-      last_name: { required: helpers.withMessage("Last Name is required", required), $autoDirty: true },
-      username: { required: helpers.withMessage("Username is required", required), $autoDirty: true },
-      email: { required: helpers.withMessage("Email is required", required), $autoDirty: true, email },
-      phone: { required: helpers.withMessage("Phone Number is required", required), $autoDirty: true },
-      password: { required: helpers.withMessage("Password is required", required), $autoDirty: true },
+      first_name: { required: helpers.withMessage(validationMessage.FIRST_NAME_REQUIRED, required), $autoDirty: true },
+      last_name: { required: helpers.withMessage(validationMessage.LAST_NAME_REQUIRED, required), $autoDirty: true },
+      username: { required: helpers.withMessage(validationMessage.USERNAME_REQUIRED, required), $autoDirty: true },
+      email: { required: helpers.withMessage(validationMessage.EMAIL_REQUIRED, required), $autoDirty: true, email },
+      phone: { required: helpers.withMessage(validationMessage.PHONE_NUMBER_REQUIRED, required), $autoDirty: true },
+      password: { required: helpers.withMessage(validationMessage.PASSWORD_REQUIRED, required), $autoDirty: true },
       confirm_password: { $autoDirty: true, sameAs: sameAs(this.password, "Password") }
     }
   }
