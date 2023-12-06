@@ -1,5 +1,6 @@
 import { AppDataSource } from "../data-source"
 import { User } from "../model/User"
+import { Errors } from "../values/Errors"
 
 export class UserService {
 
@@ -30,7 +31,7 @@ export class UserService {
         user: user 
       }
     } catch (error) {
-      return { status_code: 500, error: 'An error occured while updating user' }
+      return Errors.USER_UPDATE_SERVER_ERROR
     }
   };
 }
