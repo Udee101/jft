@@ -77,6 +77,7 @@
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers } from '@vuelidate/validators';
+import { validationMessage } from "../../helpers";
 export default {
   setup() {
     return { v$: useVuelidate() }
@@ -85,6 +86,7 @@ export default {
     return {
       isLoading: false,
       isSuccessful: false,
+      validationMessage
     };
   },
   props: {
@@ -127,10 +129,10 @@ export default {
   validations(){
     return {
       user: {
-        first_name: { required: helpers.withMessage("First Name is required", required) },
-        last_name: { required: helpers.withMessage("Last Name is required", required) },
-        email: { required: helpers.withMessage("Email is required", required), email },
-        phone: { required: helpers.withMessage("Phone number is required", required) },
+        first_name: { required: helpers.withMessage(validationMessage.FIRST_NAME_REQUIRED, required) },
+        last_name: { required: helpers.withMessage(validationMessage.LAST_NAME_REQUIRED, required) },
+        email: { required: helpers.withMessage(validationMessage.EMAIL_REQUIRED, required), email },
+        phone: { required: helpers.withMessage(validationMessage.PHONE_NUMBER_REQUIRED, required) },
       }
     }
   }

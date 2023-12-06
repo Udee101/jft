@@ -106,6 +106,7 @@ import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers, url } from '@vuelidate/validators';
+import { validationMessage } from '../../helpers';
 export default {
   setup() {
     return { v$: useVuelidate() }
@@ -132,6 +133,7 @@ export default {
       website: "",
       email: "",
       description: "",
+      validationMessage
     };
   },
 
@@ -172,13 +174,13 @@ export default {
 
   validations(){
     return {
-      title: { required: helpers.withMessage("This field cannot be empty", required) },
-      tags: { required: helpers.withMessage("This field cannot be empty", required) },
-      company: { required: helpers.withMessage("This field cannot be empty", required) },
-      location: { required: helpers.withMessage("This field cannot be empty", required) },
-      website: { required: helpers.withMessage("This field cannot be empty", required), url: helpers.withMessage("Must be a valid URL", url) },
-      email: { required: helpers.withMessage("This field cannot be empty", required), },
-      description: { required: helpers.withMessage("Please input the job description", required) },
+      title: { required: helpers.withMessage(validationMessage.FIELD_CANNOT_BE_EMPTY, required) },
+      tags: { required: helpers.withMessage(validationMessage.FIELD_CANNOT_BE_EMPTY, required) },
+      company: { required: helpers.withMessage(validationMessage.FIELD_CANNOT_BE_EMPTY, required) },
+      location: { required: helpers.withMessage(validationMessage.FIELD_CANNOT_BE_EMPTY, required) },
+      website: { required: helpers.withMessage(validationMessage.FIELD_CANNOT_BE_EMPTY, required), url: helpers.withMessage(validationMessage.VALID_URL, url) },
+      email: { required: helpers.withMessage(validationMessage.FIELD_CANNOT_BE_EMPTY, required), },
+      description: { required: helpers.withMessage(validationMessage.INPUT_JOB_DESCRIPTION, required) },
     }
   }
 
