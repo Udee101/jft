@@ -3,6 +3,7 @@ import { AppDataSource } from "../data-source"
 import { User } from "../model/User"
 import { validationResult } from "express-validator"
 import { paginateResponse } from "../helper/helpers"
+import { Errors } from "../values/Errors"
 
 export class ListingService {
   private static listingRepository = AppDataSource.getRepository(Listing)
@@ -34,7 +35,7 @@ export class ListingService {
       return { status_code: 200, ...paginateListings }
       
     } catch (error) {
-      return { status_code: 500, error: "An error occured while fetching job listings" }
+      return Errors.FETCH_ALL_LISTINGS_SERVER_ERROR
     }
   };
 
@@ -42,13 +43,13 @@ export class ListingService {
     try {
       const listing = await this.listingRepository.findOneBy({ id: id })
       if (!listing) {
-        return { status_code: 404, error: "Listing Not Found" }
+        return Errors.LISTING_NOT_FOUND
       }
 
       return { status_code: 200, listing: listing}
       
     } catch (error) {
-      return { status_code: 500, error: "An error occured while retrieving listing details" }
+      return Errors.LISTING_DETAILS_SERVER_ERROR
     }
   };
 
@@ -80,7 +81,7 @@ export class ListingService {
       }
       
     } catch (error) {
-      return { status_code: 500, error: "An error occured while creating job listing"}
+      return Errors.LISTING_CREATION_SERVER_ERROR
     }
   };
 
@@ -88,7 +89,7 @@ export class ListingService {
     try {
       let listing = await this.listingRepository.findOneBy({ id: listingId })
       if (!listing) {
-        return { status_code: 404, error: "Listing not found"}
+        return Errors.LISTING_NOT_FOUND
       }
 
       await this.listingRepository
@@ -114,7 +115,7 @@ export class ListingService {
       }
       
     } catch (error) {
-      return { status_code: 500, error: "An error occured while updating listing" }
+      return Errors.LISTING_UPDATE_SERVER_ERROR
     }
   };
 
@@ -149,7 +150,7 @@ export class ListingService {
       return { status_code: 200, ...paginateListings }
       
     } catch (error) {
-      return { status_code: 500, error: "An error occured while retrieving user listings" }
+      return Errors.USER_LISTINGS_SERVER_ERROR
     }
   };
 
@@ -157,14 +158,14 @@ export class ListingService {
     try {
       const listing = await this.listingRepository.findOneBy({ id: listingId })
       if (!listing) {
-        return { status_code: 404, error: "Job listing not found" }
+        return Errors.LISTING_NOT_FOUND
       }
 
       await this.listingRepository.remove(listing)
       return { status_code: 200, message: "Job listing Deleted!" }
 
     } catch (error) {
-      return { status_code: 500, error: "An error occured while deleting job listing" }
+      return Errors.LISTING_DELETE_SERVER_ERROR
     }
   }
 }

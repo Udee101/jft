@@ -3,6 +3,7 @@ import { AppDataSource } from "../data-source"
 import { User } from "../model/User"
 import * as bcrypt from "bcrypt"
 import * as jwt from "jsonwebtoken"
+import { Errors } from "../values/Errors"
 
 
 export class AuthService {
@@ -15,15 +16,15 @@ export class AuthService {
         return { status_code: 400, error: errors.array() }
       }
 
-      const existingUer = await this.userRepository.find({
+      const existingUser = await this.userRepository.find({
         where: [
           { username: data.body.username },
           { email: data.body.email }
         ]
       })
 
-      if (existingUer) {
-        return { status_code: 400, error: "Username or Email already exists" }
+      if (existingUser) {
+        return Errors.USERNAME_OR_EMAIL_ALREADY_EXISTS
       }
 
       const salt = await bcrypt.genSalt()
@@ -45,7 +46,7 @@ export class AuthService {
         user: user
       } 
     } catch (error:any) {
-      return { status_code: 500, error: "An error ocurred registering user" }
+      return Errors.USER_REGISTRATION_SERVER_ERROR
     }
   }
 
@@ -64,12 +65,12 @@ export class AuthService {
       })
   
       if (!user) {
-        return { status_code: 400, error: "Invalid Credentials" }
+        return Errors.INVALID_CREDENTIALS
       }
   
       const passwordCheck = await bcrypt.compare(data.body.password, user.password)
       if (!passwordCheck) {
-        return { status_code: 400, error: "Invalid Credentials" }
+        return Errors.INVALID_CREDENTIALS
       }
   
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 20 })
@@ -82,7 +83,7 @@ export class AuthService {
       }
 
     } catch (error) {
-      
+      return Errors.USER_LOGIN_SERVER_ERROR
     }
   }
 }
