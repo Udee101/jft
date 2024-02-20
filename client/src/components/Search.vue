@@ -4,6 +4,7 @@
     placeholder="search"
     :value="search"
     @input="$emit('update:search', $event.target.value)"
+    @change="$emit('search-job')"
   >
   <f-a-i 
     @click="$emit('search-job')"
