@@ -22,7 +22,7 @@
 
     <div class="comp-tags my-1">
       <div v-for="(tag, i) in formatedJobTags" :key="i">
-        <p class="text-base text-color-3">{{ tag }}</p>
+        <p class="text-sm text-color-3">{{ tag }}</p>
       </div>
     </div>
 
@@ -39,7 +39,7 @@
         Contact Employer
       </a>
 
-      <a :href="listing.website" class="website text-white font-bold hover-opacity">
+      <a :href="listing.website" target="_blank" class="website text-white font-bold hover-opacity">
         <f-a-i icon="fas fa-up-right-from-square" /> 
         Visit Website
       </a>
