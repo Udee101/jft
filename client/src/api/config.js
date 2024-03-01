@@ -17,7 +17,7 @@ export const url = () => {
   let apiUrl = ''
   
   if (process.env.NODE_ENV === 'production') {
-    apiUrl = 'https://jftapi.onrender.com'
+    apiUrl = 'https://blog-api-dbae.onrender.com'
   } else {
     apiUrl = 'http://localhost:5001'
   }
