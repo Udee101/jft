@@ -14,7 +14,7 @@
           {{ job.location }}
         </p>
       </div>
-    <p v-if="getTimeDifferenceSinceWhenPosted < 60" :class="`date-posted ${styleDaysPosted}`">{{ getTimeDifferenceSinceWhenPosted }} {{ getDateText(getTimeDifferenceSinceWhenPosted) }} </p>
+    <p v-if="getTimeDifferenceSinceWhenPosted < 60" :class="`date-posted ${styleDaysPosted}`">{{ getTimeDifferenceSinceWhenPosted === 0 ? '' : getTimeDifferenceSinceWhenPosted }} {{ getDateText(getTimeDifferenceSinceWhenPosted) }} </p>
 
     <p v-else :class="`date-posted ${styleDaysPosted}`">long time ago</p>
     </router-link>
@@ -51,7 +51,7 @@ import { toSvg } from "jdenticon"
     methods: {
       getDateText(days) {
         if (days < 1) {
-          return "Today"
+          return "posted today"
         } else if ( days === 1 ) {
           return "day ago"
         } else {

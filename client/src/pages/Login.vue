@@ -97,7 +97,7 @@ export default {
       this.isLoading = true;
       // this.invalidCredentials = "";
       const data = {
-        usernameOrEmail: "testuser",
+        usernameOrEmail: "usr2",
         password: "Password"
       }
       this.makeLoginRequest(data)
