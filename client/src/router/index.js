@@ -16,7 +16,7 @@ const invalidateJWT = () => {
 
   const elapsedTimeInSeconds = (Date.now() - createdAt) / 1000;
 
-  if (elapsedTimeInSeconds > 600 ) {
+  if (elapsedTimeInSeconds > 1000 ) {
     localStorage.removeItem('jft_jwt');
   }
 
