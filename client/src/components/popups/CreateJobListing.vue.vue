@@ -124,6 +124,9 @@ export default {
 
   data() {
     return {
+      currentPage: 1,
+      limit: 3,
+      search: "",
       isLoading: false,
       isSuccessful: false,
       title: "",
@@ -161,7 +164,11 @@ export default {
         }
         this.createJobListing(data).then((res) => {
           this.isSuccessful = true;
-          this.$store.dispatch("jobListing/fetUserJobListings");
+          this.$store.dispatch("jobListing/fetUserJobListings", {
+            page: this.currentPage,
+            limit: this.limit,
+            search: this.search
+          });
           setTimeout(() => {
             this.isLoading = false;
             this.isSuccessful = true;
