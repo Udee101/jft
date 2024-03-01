@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express"
 import { body } from "express-validator";
 import * as jwt from "jsonwebtoken"
 
-dotenv.config({ path: ".env" });
+dotenv.config();
 
 export const authenticateToken = (req:Request, res:Response, next:NextFunction) => {
   const authHeader = req.headers.authorization

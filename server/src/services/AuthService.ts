@@ -4,7 +4,9 @@ import { User } from "../model/User"
 import * as bcrypt from "bcrypt"
 import * as jwt from "jsonwebtoken"
 import { Errors } from "../values/Errors"
+import { config } from "dotenv";
 
+config()
 
 export class AuthService {
   private static userRepository = AppDataSource.getRepository(User)
